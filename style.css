@@ -1,0 +1,46 @@
+html {
+    /* Prevents default white background flash */
+    background-color: #87ceeb;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    min-height: 100vh;
+
+    /* CSS Scroll-Driven Animation */
+    animation: bg-change linear both;
+    animation-timeline: scroll(root);
+}
+
+@keyframes bg-change {
+    0% {
+        background-color: #87ceeb;
+        /* Light sky blue */
+        color: #1a1a1a;
+    }
+
+    50% {
+        background-color: #0063ff;
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    100% {
+        background-color: #050b14;
+        /* Deep trench dark blue */
+        color: #ffffff;
+    }
+}
+
+/* Ensures each section takes up full viewport height so scrolling works */
+.content-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+}
