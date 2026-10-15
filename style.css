@@ -90,7 +90,7 @@ a {
 }
 
 .navbar .brand button:hover {
-    color: greenyellow;
+    color: brown;
 }
 
 .navbar .brand span {
@@ -109,16 +109,6 @@ a {
     padding: 0.4em 1.6em;
     transition: .4s;
     font-weight: 600;
-}
-
-.navbar ul li a button {
-    border: none;
-    border-style: none;
-    width: 200px;
-    height: 60px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    cursor: pointer;
 }
 
 .navbar ul li a:hover {
