@@ -85,7 +85,7 @@ a {
     width: 200px;
     height: 70px;
     font-size: 25px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font: inherit;
     cursor: pointer;
 }
 
