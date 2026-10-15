@@ -73,6 +73,7 @@ a {
 .navbar .brand {
     color: white;
     font-size: 1.2em;
+    background-color: bisque;
 }
 
 .navbar .brand span {
