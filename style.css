@@ -14,9 +14,15 @@ body {
 
 @keyframes bg-change {
     0% {
-        background-color: #87ceeb;
+        background-color: #276680;
         /* Light sky blue */
         color: #1a1a1a;
+    }
+
+    10% {
+        background-color: rgb(19, 117, 17);
+        /* Ocean blue */
+        color: #ffffff;
     }
 
     10% {
@@ -25,13 +31,13 @@ body {
         color: #ffffff;
     }
 
-    25% {
+    30% {
         background-color: burlywood;
         /* Ocean blue */
         color: #ffffff;
     }
 
-    35% {
+    40% {
         background-color: rgb(144, 61, 13);
         /* Ocean blue */
         color: #ffffff;
@@ -83,7 +89,7 @@ a {
     justify-content: space-between;
     align-items: center;
 
-    padding-top: 45px;
+    padding-top: 10px;
     padding-left: 8%;
     padding-right: 8%;
     background-color: rgb(222, 135, 179);
