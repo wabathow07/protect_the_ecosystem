@@ -44,7 +44,25 @@ body {
     }
 
     50% {
-        background-color: #182b77;
+        background-color: #4b9fc6;
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    60% {
+        background-color: #237499;
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    70% {
+        background-color: #1a5e7d;
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    85% {
+        background-color: #0b2f40;
         /* Ocean blue */
         color: #ffffff;
     }
