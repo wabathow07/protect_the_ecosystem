@@ -68,6 +68,7 @@ a {
     padding-top: 45px;
     padding-left: 8%;
     padding-right: 8%;
+    background-color: burlywood;
 }
 
 .navbar .brand {
@@ -84,7 +85,7 @@ a {
     width: 200px;
     height: 50px;
     font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif, bold;
     cursor: pointer;
 }
 
