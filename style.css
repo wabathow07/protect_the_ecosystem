@@ -19,8 +19,26 @@ body {
         color: #1a1a1a;
     }
 
+    10% {
+        background-color: rgb(150, 207, 64);
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    25% {
+        background-color: burlywood;
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
+    35% {
+        background-color: rgb(144, 61, 13);
+        /* Ocean blue */
+        color: #ffffff;
+    }
+
     50% {
-        background-color: #0063ff;
+        background-color: #182b77;
         /* Ocean blue */
         color: #ffffff;
     }
