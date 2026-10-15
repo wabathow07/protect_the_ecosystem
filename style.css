@@ -77,11 +77,15 @@ a {
 }
 
 .navbar .brand button {
-    border: none;
-    padding: 0;
-    font: inherit;
+    border: 2px solid bisque;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    width: 200px;
+    height: 60px;
+    font-size: 16px;
     cursor: pointer;
-    outline: none;
 }
 
 .navbar .brand span {
