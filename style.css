@@ -126,6 +126,7 @@ a {
     background-color: rgb(51, 93, 50);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
+    display: flex;
 }
 
 .info .water button {
@@ -141,4 +142,5 @@ a {
     background-color: rgb(50, 69, 93);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
+    display: flex;
 }
