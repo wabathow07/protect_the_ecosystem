@@ -83,7 +83,7 @@ a {
     font-size: 1.2em;
 }
 
-.navbar .brand button {
+/*.navbar .brand button {
     border: none;
     border-width: 3px;
     border-style: solid;
@@ -95,9 +95,9 @@ a {
     color: black;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
-}
+} */
 
-.navbar .brand button:hover {
+.navbar .brand a:hover {
     color: brown;
 }
 
@@ -107,6 +107,9 @@ a {
 
 .navbar ul {
     list-style-type: none;
+    background-color: #1a1a1a;
+    padding: 0;
+    margin: 0;
     display: flex;
 }
 
