@@ -86,6 +86,10 @@ a {
 }
 
 .navbar .brand {
+    font-size: 25px;
+    color: black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
     color: white;
     font-size: 1.2em;
 }
@@ -103,10 +107,6 @@ a {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
 } */
-
-.navbar .brand a:hover {
-    color: brown;
-}
 
 .navbar .brand span {
     color: mediumaquamarine;
@@ -127,6 +127,10 @@ a {
     padding: 0.4em 1.6em;
     transition: .4s;
     font-weight: 600;
+}
+
+.navbar .brand a:hover {
+    color: brown;
 }
 
 .navbar ul li a:hover {
