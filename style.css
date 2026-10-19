@@ -146,11 +146,6 @@ a {
     align-items: center;
 }
 
-.info .land a:hover,
-.info.water a:hover {
-    color: brown;
-}
-
 .contact {
     display: flex;
     gap: 20px;
@@ -193,9 +188,4 @@ a {
     height: 100%;
     justify-content: center;
     align-items: center;
-}
-
-.contact .clea a:hover,
-.contact .sunny a:hover {
-    color: brown;
 }
