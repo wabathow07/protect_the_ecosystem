@@ -152,7 +152,7 @@ a {
     align-items: center;
 }
 
-.info .land a,
+.info .land a:hover,
 .info.water a:hover {
     color: brown;
 }
@@ -201,7 +201,7 @@ a {
     align-items: center;
 }
 
-.contact .clea a,
+.contact .clea a:hover,
 .contact .sunny a:hover {
     color: brown;
 }
