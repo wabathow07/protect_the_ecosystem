@@ -1,6 +1,6 @@
 html {
     /* Prevents default white background flash */
-    background-color: #87ceeb;
+    background-color: #c3d3d9;
 }
 
 body {
@@ -142,7 +142,7 @@ a {
     border-color: black;
     border-radius: 8px;
     width: 400px;
-    height: 220px;
+    height: 300px;
     font-size: 67px;
     color: white;
     background-color: rgb(50, 69, 93);
