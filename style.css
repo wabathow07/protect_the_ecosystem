@@ -116,32 +116,38 @@ a {
     align-items: center;
 }
 
-.info .land button {
-    border: none;
-    border-width: 3px;
-    border-style: solid;
-    border-color: black;
-    border-radius: 8px;
-    width: 400px;
-    height: 120px;
-    font-size: 200px;
-    color: white;
-    background-color: rgb(51, 93, 50);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    cursor: pointer;
-}
-
-.info .water button {
-    border: none;
-    border-width: 3px;
-    border-style: solid;
-    border-color: black;
+.info .land,
+.info .water {
+    border: 3px solid black;
     border-radius: 8px;
     width: 380px;
     height: 280px;
-    font-size: 200px;
-    color: white;
-    background-color: rgb(50, 69, 93);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.info .land {
+    background-color: rgb(46, 80, 56);
+}
+
+.info .water {
+    background-color: rgb(50, 69, 93);
+}
+
+.info .land a,
+.info .water a {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 48px;
+    color: white;
+    text-decoration: none;
+
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
 }
