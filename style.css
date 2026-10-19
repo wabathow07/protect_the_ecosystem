@@ -127,12 +127,12 @@ a {
     border-style: solid;
     border-color: black;
     border-radius: 8px;
-    width: 380px;
+    width: 400px;
     height: 120px;
     font-size: 60px;
     color: white;
     background-color: rgb(51, 93, 50);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font: inherit;
     cursor: pointer;
 }
 
@@ -147,6 +147,6 @@ a {
     font-size: 60px;
     color: white;
     background-color: rgb(50, 69, 93);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font: inherit;
     cursor: pointer;
 }
