@@ -126,6 +126,11 @@ a {
     text-align: center;
 }
 
+.info .land,
+.info.water:hover {
+    color: brown;
+}
+
 .info .land {
     background-color: rgb(46, 80, 56);
 }
@@ -168,6 +173,11 @@ a {
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.contact .clea,
+.contact .sunny:hover {
+    color: brown;
 }
 
 .contact .clea {
