@@ -163,3 +163,33 @@ a {
 .navbar ul li a:hover {
     color: brown;
 }
+
+.info .land button {
+    border: none;
+    border-width: 3px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 8px;
+    width: 750px;
+    height: 250px;
+    font-size: 120px;
+    color: white;
+    background-color: rgb(51, 93, 50);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+}
+
+.info .water button {
+    border: none;
+    border-width: 3px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 8px;
+    width: 750px;
+    height: 250px;
+    font-size: 120px;
+    color: white;
+    background-color: rgb(50, 69, 93);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+}
