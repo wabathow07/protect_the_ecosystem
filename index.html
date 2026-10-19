@@ -10,31 +10,8 @@
 
 <body>
     <div id="myVideo">
-        <video autoplay loop muted playsinline>
-            <source src="video/land_tigers.mp4" type="video/mp4">
-        </video>
+        <video id="backgroundVideo" autoplay loop muted playsinline></video>
     </div>
-
-    <!-- <div class="container-fluid">
-        <div class="navbar">
-            <div class="brand">
-                <button><a href="https://wabathow07.github.io/protect_the_ecosystem/#">Preserve the
-                        Ecosystem</a></button>
-            </div>
-            <ul>
-                <li>
-                    <a href="https://thegivingblock.com/resources/7-environmental-causes-to-donate-to-all-year-round/">Donate
-                        to the Causes!</a>
-                </li>
-                <li>
-                    <a href="#">Our Sources</a>
-                </li>
-                <li>
-                    <a href="https://wabathow07.github.io/protect_the_ecosystem/contact">Contact Information</a>
-                </li>
-            </ul>
-        </div>
-    </div> -->
 
     <nav class="container-fluid">
         <div class="navbar">
@@ -59,10 +36,13 @@
 
     <!-- Section 1: Intro -->
     <div class="content-section">
-        <h1 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 600%;">Climate
-            Change Is Killing the Earth.</h1>
-        <h2><br>Action must be taken. Read below about how climate change is impacting natural environments, on land
-            and under water.</h2>
+        <h1>Climate Change Is Killing the Earth.</h1>
+        <h2
+            style="background-color: white; text-align: center; padding-left: 30px; padding-right: 30px; padding-bottom: 30px;">
+            <br>Action must be taken. Read
+            below about how climate change is impacting natural environments, on land
+            and under water
+        </h2>
     </div>
 
     <div class="content-section">
@@ -158,6 +138,19 @@
             been shifting, which affects the trench organisms. Since it is the lowest layer, it is isolated and facing
             disruptions from habitat disconnection.</p>
     </div> -->
+    <script>
+        const videos = [
+            "videos/land_tigers.mp4",
+            "videos/land_deer.mp4",
+            "videos/land_monkey.mp4",
+            "videos/land_penguin.mp4",
+            "videos/land_bear.mp4"
+        ];
+
+        const video = document.getElementById("backgroundVideo");
+        video.src = videos[Math.floor(Math.random() * videos.length)];
+        video.load();
+    </script>
 </body>
 
 </html>
