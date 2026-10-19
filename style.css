@@ -113,6 +113,13 @@ a {
     color: brown;
 }
 
+.info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .info .land button {
     border: none;
     border-width: 3px;
@@ -126,7 +133,6 @@ a {
     background-color: rgb(51, 93, 50);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
-    display: flex;
 }
 
 .info .water button {
@@ -142,5 +148,4 @@ a {
     background-color: rgb(50, 69, 93);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     cursor: pointer;
-    display: flex;
 }
