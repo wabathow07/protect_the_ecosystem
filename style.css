@@ -115,10 +115,10 @@ a {
 
 .info {
     display: flex;
+    gap: 20px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
 }
 
 .info .land button {
