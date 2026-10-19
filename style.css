@@ -62,10 +62,10 @@ a {
     justify-content: space-between;
     align-items: center;
 
-    /* padding-top: 10px;
+    padding-top: 10px;
     padding-left: 8%;
     padding-right: 8%;
-    background-color: rgb(85, 18, 52); */
+    background-color: rgb(18, 29, 85);
 }
 
 .navbar .brand {
