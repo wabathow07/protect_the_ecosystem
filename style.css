@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    isolation: isolate;
     min-height: 100vh;
     animation: bg-change linear both;
     animation-timeline: scroll(root);
@@ -22,6 +23,23 @@ body {
     }
 }
 
+#myVideo {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    /* so that the video won't block links when we try to click on them */
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#myVideo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .content-section {
     min-height: 100vh;
     display: flex;
@@ -31,15 +49,9 @@ body {
     padding: 2rem;
     box-sizing: border-box;
     text-align: center;
-}
-
-#myVideo {
-    position: fixed;
-    pointer-events: none;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
+    position: relative;
+    z-index: 1;
+    /* determining layer order, this one is layer 1, the video is layer 0 -> video behind texts */
 }
 
 * {
@@ -54,7 +66,9 @@ a {
 }
 
 .container-fluid {
+    position: relative;
     width: 100%;
+    z-index: 1;
 }
 
 .navbar {
