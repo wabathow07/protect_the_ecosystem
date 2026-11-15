@@ -11,23 +11,33 @@ document.querySelectorAll(".content-section h1, .content-section h2, .content-se
 
         textNodes.forEach((textNode) => {
             const fragment = document.createDocumentFragment();
+            const words = textNode.nodeValue.split(/(\s+)/);
 
-            for (const character of textNode.nodeValue) {
-                if (/\s/.test(character)) {
-                    fragment.appendChild(document.createTextNode(character));
-                    continue;
+            words.forEach((word) => {
+                if (/^\s+$/.test(word)) {
+                    fragment.appendChild(document.createTextNode(word));
+                    return;
                 }
 
-                const span = document.createElement("span");
-                span.className = "water-char";
-                span.style.setProperty(
-                    "--char-delay",
-                    `${Math.min(characterIndex * 12, 360)}ms`
-                );
-                span.textContent = character;
-                fragment.appendChild(span);
-                characterIndex++;
-            }
+                if (!word) return;
+
+                const wordSpan = document.createElement("span");
+                wordSpan.className = "water-word";
+
+                for (const character of word) {
+                    const charSpan = document.createElement("span");
+                    charSpan.className = "water-char";
+                    charSpan.style.setProperty(
+                        "--char-delay",
+                        `${Math.min(characterIndex * 12, 360)}ms`
+                    );
+                    charSpan.textContent = character;
+                    wordSpan.appendChild(charSpan);
+                    characterIndex++;
+                }
+
+                fragment.appendChild(wordSpan);
+            });
 
             textNode.parentNode.replaceChild(fragment, textNode);
         });

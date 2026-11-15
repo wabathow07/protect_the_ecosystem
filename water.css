@@ -105,3 +105,7 @@ body.water .water-zone:nth-of-type(odd) .water-image {
 body.water .water-zone:nth-of-type(odd) .water-copy {
     order: 1;
 }
+
+.water-word {
+    white-space: nowrap;
+}
