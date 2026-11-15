@@ -5,3 +5,28 @@ body.water .content-section h1 {
 body.water .content-section h2 {
     color: #0e7490;
 }
+
+.content-section+.content-section {
+    margin-top: 0.5rem;
+}
+
+.water-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.65em);
+    transition: opacity 450ms ease, transform 450ms ease;
+    transition-delay: var(--char-delay, 0ms);
+}
+
+.is-visible .water-char {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .water-char {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
