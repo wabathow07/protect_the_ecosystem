@@ -1,23 +1,64 @@
 body.water {
-    font-size: clamp(1.1rem, 1rem + 0.35vw, 1.35rem);
+    font-size: clamp(1.15rem, 1rem + 0.4vw, 1.4rem);
 }
 
 body.water .content-section {
+    box-sizing: border-box;
     height: auto !important;
     min-height: 0 !important;
-    padding-block: 1rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
 }
 
-body.water .content-section+.content-section {
-    margin-top: 0.5rem;
+body.water .water-title {
+    min-height: 100svh !important;
+    display: grid;
+    place-items: center;
+    text-align: center;
 }
 
-body.water .content-section h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+body.water .water-title h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
 }
 
-body.water .content-section h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+body.water .water-zone {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+body.water .water-zone+.water-zone {
+    margin-top: 1rem;
+}
+
+body.water .water-image {
+    min-height: 300px;
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    border: 2px dashed #5b8790;
+    border-radius: 12px;
+    background: #e8f4f4;
+    color: #315d66;
+}
+
+body.water .water-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+body.water .water-copy h2 {
+    margin-top: 0;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+body.water .water-copy p {
+    font-size: clamp(1.2rem, 1rem + 0.5vw, 1.6rem);
+    line-height: 1.7;
 }
 
 .water-char {
@@ -31,6 +72,16 @@ body.water .content-section h2 {
 .is-visible .water-char {
     opacity: 1;
     transform: translateY(0);
+}
+
+@media (max-width: 700px) {
+    body.water .water-zone {
+        grid-template-columns: 1fr;
+    }
+
+    body.water .water-image {
+        min-height: 220px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
