@@ -91,3 +91,17 @@ body.water .water-copy p {
         transition: none;
     }
 }
+
+body.water .water-title h1,
+body.water .water-copy h2 {
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+/* The title is the first div, so odd-numbered water zones are the alternating rows. */
+body.water .water-zone:nth-of-type(odd) .water-image {
+    order: 2;
+}
+
+body.water .water-zone:nth-of-type(odd) .water-copy {
+    order: 1;
+}
