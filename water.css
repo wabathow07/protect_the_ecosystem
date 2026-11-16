@@ -5,27 +5,6 @@ body.water {
     background: linear-gradient(180deg, #62c6df 0%, #063b66 100%) fixed;
 }
 
-body.water::before {
-    content: "";
-    position: fixed;
-    inset: -50%;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.3;
-    background: repeating-radial-gradient(ellipse at center,
-            transparent 0 35px,
-            rgb(220 250 255 / 14%) 37px 39px,
-            transparent 42px 75px);
-    background-size: 420px 300px;
-    animation: water-drift 24s linear infinite;
-}
-
-@keyframes water-drift {
-    to {
-        background-position: 420px 300px;
-    }
-}
-
 body.water .content-section {
     box-sizing: border-box;
     height: auto !important;

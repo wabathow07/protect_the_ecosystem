@@ -142,9 +142,8 @@ if (shark && titleSection &&
         const maxY = Math.max(0, titleSection.clientHeight - shark.offsetHeight);
         const nextX = Math.random() * maxX;
         const nextY = Math.random() * maxY;
-        const currentX = parseFloat(shark.style.left) || 0;
 
-        shark.style.setProperty("--direction", nextX >= currentX ? "1" : "-1");
+        shark.style.setProperty("--direction", Math.random() < 0.5 ? "-1" : "1");
         shark.style.setProperty("--travel-time", `${3 + Math.random() * 3}s`);
         shark.style.left = `${nextX}px`;
         shark.style.top = `${nextY}px`;
