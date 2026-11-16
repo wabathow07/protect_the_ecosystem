@@ -187,3 +187,62 @@ body.water .water-photos img.is-visible {
 body.water .water-photos img {
     border-radius: 12px;
 }
+
+.water-photos img {
+    cursor: pointer;
+}
+
+.water-lightbox[hidden] {
+    display: none;
+}
+
+.water-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: rgb(0 0 0 / 75%);
+}
+
+.water-lightbox-content {
+    position: relative;
+    width: min(90vw, 800px);
+    max-height: 90vh;
+    text-align: center;
+}
+
+.water-lightbox-image {
+    display: block;
+    max-width: 100%;
+    max-height: 75vh;
+    margin: 0 auto;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.water-lightbox-caption {
+    margin: 0.75rem 0 0;
+    color: white;
+    font: 1.25rem Arial, sans-serif;
+}
+
+.water-lightbox-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: white;
+    color: #111;
+    font: 2rem/1 Arial, sans-serif;
+    cursor: pointer;
+}
+
+body.water-lightbox-open {
+    overflow: hidden;
+}
