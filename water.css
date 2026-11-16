@@ -189,7 +189,7 @@ body.water .water-photos img {
 }
 
 .water-photos img {
-    cursor: pointer;
+    cursor: zoom-in;
 }
 
 .water-lightbox[hidden] {
@@ -203,13 +203,12 @@ body.water .water-photos img {
     display: grid;
     place-items: center;
     padding: 1.5rem;
-    background: rgb(0 0 0 / 75%);
+    background: rgb(0 0 0 / 80%);
 }
 
 .water-lightbox-content {
     position: relative;
     width: min(90vw, 800px);
-    max-height: 90vh;
     text-align: center;
 }
 
@@ -223,7 +222,6 @@ body.water .water-photos img {
 }
 
 .water-lightbox-caption {
-    margin: 0.75rem 0 0;
     color: white;
     font: 1.25rem Arial, sans-serif;
 }
@@ -233,13 +231,6 @@ body.water .water-photos img {
     top: 0.5rem;
     right: 0.5rem;
     z-index: 1;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 0;
-    border-radius: 50%;
-    background: white;
-    color: #111;
-    font: 2rem/1 Arial, sans-serif;
     cursor: pointer;
 }
 
