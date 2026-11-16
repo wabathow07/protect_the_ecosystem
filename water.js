@@ -27,10 +27,7 @@ document.querySelectorAll(".content-section h1, .content-section h2, .content-se
                 for (const character of word) {
                     const charSpan = document.createElement("span");
                     charSpan.className = "water-char";
-                    charSpan.style.setProperty(
-                        "--char-delay",
-                        `${Math.min(characterIndex * 12, 360)}ms`
-                    );
+                    charSpan.style.setProperty("--char-delay", `${characterIndex * 20}ms`);
                     charSpan.textContent = character;
                     wordSpan.appendChild(charSpan);
                     characterIndex++;
