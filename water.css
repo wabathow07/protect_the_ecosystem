@@ -35,9 +35,11 @@ body.water .content-section {
 }
 
 body.water .water-title {
-    min-height: 100svh !important;
+    position: relative;
     display: grid;
+    min-height: 100svh !important;
     place-items: center;
+    overflow: hidden;
     text-align: center;
 }
 
@@ -47,7 +49,40 @@ body.water .water-copy h2 {
 }
 
 body.water .water-title h1 {
+    position: relative;
+    z-index: 1;
     font-size: clamp(3rem, 8vw, 6rem);
+}
+
+body.water .water-shark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: clamp(90px, 16vw, 190px);
+    pointer-events: none;
+    will-change: left, top;
+    transition: left var(--travel-time, 4s) ease-in-out,
+        top var(--travel-time, 4s) ease-in-out;
+}
+
+body.water .water-shark img {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation: shark-wiggle 700ms ease-in-out infinite;
+}
+
+@keyframes shark-wiggle {
+
+    0%,
+    100% {
+        transform: scaleX(var(--direction, 1)) rotate(-3deg);
+    }
+
+    50% {
+        transform: scaleX(var(--direction, 1)) rotate(3deg);
+    }
 }
 
 body.water .water-zone {
@@ -77,9 +112,9 @@ body.water .water-zone:nth-of-type(odd) .water-copy {
 }
 
 body.water .water-image {
+    display: grid;
     min-height: 300px;
     aspect-ratio: 4 / 3;
-    display: grid;
     place-items: center;
     border: 2px dashed #5b8790;
     border-radius: 12px;
@@ -104,6 +139,7 @@ body.water .water-copy h2 {
 
 body.water .water-copy p {
     font-size: clamp(1.3rem, 1.05rem + 0.5vw, 1.7rem);
+    line-height: 1.7;
 }
 
 .water-line {
@@ -220,14 +256,20 @@ body.water .water-photos img.is-visible {
     top: 0.5rem;
     right: 0.5rem;
     z-index: 1;
-    cursor: pointer;
+    padding: 0;
     border: 0;
     background: transparent;
     color: white;
+    box-shadow: none;
     font: 2.5rem/1 Arial, sans-serif;
     -webkit-text-stroke: 1px #123;
     text-shadow: 1px 1px 3px #123;
-    box-shadow: none;
+    cursor: pointer;
+}
+
+.water-lightbox-close:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
 }
 
 body.water-lightbox-open {
@@ -260,6 +302,14 @@ body.water nav {
 
 @media (prefers-reduced-motion: reduce) {
     body.water::before {
+        animation: none;
+    }
+
+    body.water .water-shark {
+        transition: none;
+    }
+
+    body.water .water-shark img {
         animation: none;
     }
 
