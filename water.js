@@ -87,8 +87,7 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         bubble.style.top = `${event.clientY}px`;
         bubble.style.setProperty("--bubble-size", `${4 + Math.random() * 15}px`);
         bubble.style.setProperty("--bubble-drift", `${Math.random() * 36 - 18}px`);
-        bubble.style.setProperty("--bubble-duration", `${700 + Math.random() * 500}ms`);
-
+        bubble.style.setProperty("--bubble-duration", `${1500 + Math.random() * 1000}ms`);
         document.body.appendChild(bubble);
         bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
     });
