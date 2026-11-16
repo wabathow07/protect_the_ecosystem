@@ -1,5 +1,6 @@
 body.water {
     font-size: clamp(1.15rem, 1rem + 0.4vw, 1.4rem);
+    background: linear-gradient(180deg, #62c6df 0%, #063b66 100%) fixed;
 }
 
 body.water .content-section {
@@ -7,6 +8,7 @@ body.water .content-section {
     height: auto !important;
     min-height: 0 !important;
     padding: clamp(1.5rem, 4vw, 3rem);
+    background: transparent;
 }
 
 body.water .water-title {
@@ -14,6 +16,11 @@ body.water .water-title {
     display: grid;
     place-items: center;
     text-align: center;
+}
+
+body.water .water-title h1,
+body.water .water-copy h2 {
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
 body.water .water-title h1 {
@@ -33,6 +40,21 @@ body.water .water-zone+.water-zone {
     margin-top: 1rem;
 }
 
+/* The title is the first div: the first zone is even and keeps its image left. */
+body.water .water-zone:nth-of-type(even) .water-copy {
+    text-align: right;
+}
+
+/* Alternate subsequent desktop zones. */
+body.water .water-zone:nth-of-type(odd) .water-image {
+    order: 2;
+}
+
+body.water .water-zone:nth-of-type(odd) .water-copy {
+    order: 1;
+    text-align: left;
+}
+
 body.water .water-image {
     min-height: 300px;
     aspect-ratio: 4 / 3;
@@ -42,13 +64,6 @@ body.water .water-image {
     border-radius: 12px;
     background: #e8f4f4;
     color: #315d66;
-}
-
-body.water .water-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
 }
 
 body.water .water-copy h2 {
@@ -61,102 +76,8 @@ body.water .water-copy p {
     line-height: 1.7;
 }
 
-.water-char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(0.65em);
-    transition: opacity 450ms ease, transform 450ms ease;
-    transition-delay: var(--char-delay, 0ms);
-}
-
-.is-visible .water-char {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-@media (max-width: 700px) {
-    body.water .water-zone {
-        grid-template-columns: 1fr;
-    }
-
-    body.water .water-image {
-        min-height: 220px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .water-char {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-}
-
-body.water .water-title h1,
-body.water .water-copy h2 {
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-}
-
-body.water .water-zone:nth-of-type(odd) .water-image {
-    order: 2;
-}
-
-body.water .water-zone:nth-of-type(odd) .water-copy {
-    order: 1;
-}
-
-.water-word {
-    white-space: nowrap;
-}
-
-body.water .water-zone:nth-of-type(even) .water-copy {
-    text-align: left;
-}
-
-body.water .water-zone:nth-of-type(odd) .water-copy {
-    text-align: right;
-}
-
-@media (max-width: 700px) {
-    body.water .water-zone .water-copy {
-        text-align: left;
-    }
-}
-
-@media (max-width: 700px) {
-
-    body.water .water-zone .water-image,
-    body.water .water-zone .water-copy {
-        order: 0;
-    }
-
-    body.water .water-zone .water-copy {
-        text-align: left;
-    }
-}
-
-body.water .water-image:has(.water-photos) {
-    box-sizing: border-box;
-    padding: 0.5rem;
-}
-
-body.water .water-photos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-    width: 100%;
-}
-
-body.water .water-photos img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-}
-
 .water-line {
     display: block;
-    white-space: nowrap;
 }
 
 .water-word {
@@ -167,7 +88,7 @@ body.water .water-photos img {
     display: inline-block;
     opacity: 0;
     transform: translateY(0.5em);
-    transition: opacity 350ms ease, transform 350ms ease;
+    transition: opacity 800ms ease, transform 800ms ease;
     transition-delay: var(--char-delay, 0ms);
 }
 
@@ -176,13 +97,15 @@ body.water .water-photos img {
     transform: translateY(0);
 }
 
+/* Photo container has no placeholder box; photos stack vertically. */
 body.water .water-image:has(.water-photos) {
     display: block;
     min-height: 0;
     aspect-ratio: auto;
     padding: 0;
     border: 0;
-    background: none;
+    border-radius: 0;
+    background: transparent;
 }
 
 body.water .water-photos {
@@ -196,50 +119,6 @@ body.water .water-photos img {
     display: block;
     width: 100%;
     height: auto;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .water-char {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-}
-
-.water-char {
-    transition-duration: 800ms;
-}
-
-body.water .water-image:has(.water-photos) {
-    display: block;
-    box-sizing: border-box;
-    min-height: 0;
-    aspect-ratio: auto;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-}
-
-body.water .water-photos {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    width: 100%;
-}
-
-body.water .water-photos img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: auto;
-    object-fit: cover;
-    border-radius: 0;
-}
-
-body.water .water-photos img {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 800ms ease, transform 800ms ease;
@@ -248,14 +127,6 @@ body.water .water-photos img {
 body.water .water-photos img.is-visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    body.water .water-photos img {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
 }
 
 .cursor-bubble {
@@ -284,30 +155,31 @@ body.water .water-photos img.is-visible {
     }
 }
 
-body.water .water-image:has(.water-photos) {
-    display: block;
-    min-height: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
+@media (max-width: 700px) {
+    body.water .water-zone {
+        grid-template-columns: 1fr;
+    }
+
+    body.water .water-zone .water-image,
+    body.water .water-zone .water-copy {
+        order: 0;
+    }
+
+    body.water .water-zone .water-copy {
+        text-align: left;
+    }
+
+    body.water .water-image {
+        min-height: 220px;
+    }
 }
 
-body.water .water-photos {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
+@media (prefers-reduced-motion: reduce) {
 
-body.water .water-photos img {
-    display: block;
-    width: 100%;
-    height: auto;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 800ms ease, transform 800ms ease;
-}
-
-body.water .water-photos img.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+    .water-char,
+    body.water .water-photos img {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
