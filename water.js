@@ -65,3 +65,26 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll(".water-line, .water-photos img").forEach((element) => observer.observe(element));
+
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let lastBubbleTime = 0;
+
+    document.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") return;
+
+        const now = performance.now();
+        if (now - lastBubbleTime < 55) return;
+        lastBubbleTime = now;
+
+        const bubble = document.createElement("span");
+        bubble.className = "cursor-bubble";
+        bubble.style.left = `${event.clientX}px`;
+        bubble.style.top = `${event.clientY}px`;
+        bubble.style.setProperty("--bubble-size", `${4 + Math.random() * 9}px`);
+        bubble.style.setProperty("--bubble-drift", `${Math.random() * 36 - 18}px`);
+        bubble.style.setProperty("--bubble-duration", `${700 + Math.random() * 500}ms`);
+
+        document.body.appendChild(bubble);
+        bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
+    });
+}
