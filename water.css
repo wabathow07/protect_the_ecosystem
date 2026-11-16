@@ -239,3 +239,22 @@ body.water .water-photos img {
     object-fit: cover;
     border-radius: 0;
 }
+
+body.water .water-photos img {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms ease, transform 800ms ease;
+}
+
+body.water .water-photos img.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.water .water-photos img {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

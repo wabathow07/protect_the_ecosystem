@@ -64,4 +64,4 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.2 });
 
-document.querySelectorAll(".water-line").forEach((line) => observer.observe(line));
+document.querySelectorAll(".water-line, .water-photos img").forEach((element) => observer.observe(element));
