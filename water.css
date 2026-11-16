@@ -135,3 +135,22 @@ body.water .water-zone:nth-of-type(odd) .water-copy {
         text-align: left;
     }
 }
+
+body.water .water-image:has(.water-photos) {
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+body.water .water-photos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+}
+
+body.water .water-photos img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
