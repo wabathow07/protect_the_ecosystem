@@ -77,6 +77,10 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             return;
         }
 
+        const now = performance.now();
+        if (now - lastBubbleTime < 250) return;
+        lastBubbleTime = now;
+
         const bubble = document.createElement("span");
         bubble.className = "cursor-bubble";
         bubble.style.left = `${event.clientX}px`;
@@ -89,3 +93,42 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
     });
 }
+
+const lightbox = document.createElement("div");
+lightbox.className = "water-lightbox";
+lightbox.setAttribute("role", "dialog");
+lightbox.setAttribute("aria-modal", "true");
+lightbox.hidden = true;
+lightbox.innerHTML = `
+    <div class="water-lightbox-content">
+        <button class="water-lightbox-close" type="button" aria-label="Close photo">×</button>
+        <img class="water-lightbox-image" alt="">
+        <p class="water-lightbox-caption"></p>
+    </div>
+`;
+document.body.appendChild(lightbox);
+
+const lightboxImage = lightbox.querySelector(".water-lightbox-image");
+const lightboxCaption = lightbox.querySelector(".water-lightbox-caption");
+
+document.addEventListener("click", (event) => {
+    const photo = event.target.closest(".water-photos img");
+
+    if (photo) {
+        lightboxImage.src = photo.currentSrc || photo.src;
+        lightboxImage.alt = photo.alt;
+        lightboxCaption.textContent = photo.dataset.animal || photo.alt;
+        lightbox.hidden = false;
+        document.body.classList.add("water-lightbox-open");
+    } else if (event.target === lightbox || event.target.closest(".water-lightbox-close")) {
+        lightbox.hidden = true;
+        document.body.classList.remove("water-lightbox-open");
+    }
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !lightbox.hidden) {
+        lightbox.hidden = true;
+        document.body.classList.remove("water-lightbox-open");
+    }
+});
