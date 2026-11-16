@@ -82,8 +82,7 @@ body.water .water-copy h2 {
 }
 
 body.water .water-copy p {
-    font-size: clamp(1.2rem, 1rem + 0.5vw, 1.6rem);
-    line-height: 1.7;
+    font-size: clamp(1.3rem, 1.05rem + 0.5vw, 1.7rem);
 }
 
 .water-line {
