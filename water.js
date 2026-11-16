@@ -1,44 +1,62 @@
-document.querySelectorAll(".content-section h1, .content-section h2, .content-section p")
-    .forEach((element) => {
-        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-        const textNodes = [];
+const textElements = document.querySelectorAll(
+    ".content-section h1, .content-section h2, .content-section p"
+);
 
-        while (walker.nextNode()) {
-            textNodes.push(walker.currentNode);
+textElements.forEach((element) => {
+    const tokens = (element.textContent.match(/\s+|[^\s]+/g) || []).map((text) => {
+        if (/^\s+$/.test(text)) {
+            const space = document.createElement("span");
+            space.textContent = text;
+            return { node: space, isWord: false };
         }
 
-        let characterIndex = 0;
+        const word = document.createElement("span");
+        word.className = "water-word";
 
-        textNodes.forEach((textNode) => {
-            const fragment = document.createDocumentFragment();
-            const words = textNode.nodeValue.split(/(\s+)/);
-
-            words.forEach((word) => {
-                if (/^\s+$/.test(word)) {
-                    fragment.appendChild(document.createTextNode(word));
-                    return;
-                }
-
-                if (!word) return;
-
-                const wordSpan = document.createElement("span");
-                wordSpan.className = "water-word";
-
-                for (const character of word) {
-                    const charSpan = document.createElement("span");
-                    charSpan.className = "water-char";
-                    charSpan.style.setProperty("--char-delay", `${characterIndex * 20}ms`);
-                    charSpan.textContent = character;
-                    wordSpan.appendChild(charSpan);
-                    characterIndex++;
-                }
-
-                fragment.appendChild(wordSpan);
-            });
-
-            textNode.parentNode.replaceChild(fragment, textNode);
+        [...text].forEach((character, index) => {
+            const char = document.createElement("span");
+            char.className = "water-char";
+            char.style.setProperty("--char-delay", `${Math.min(index * 25, 500)}ms`);
+            char.textContent = character;
+            word.appendChild(char);
         });
+
+        return { node: word, isWord: true };
     });
+
+    element.replaceChildren(...tokens.map((token) => token.node));
+
+    // Measure the words before grouping them into visual lines.
+    const lineTops = tokens.map((token) =>
+        token.isWord ? Math.round(token.node.getBoundingClientRect().top) : null
+    );
+
+    const lineGroups = new Map();
+    let previousLine = 0;
+
+    tokens.forEach((token, index) => {
+        let line = lineTops[index];
+
+        if (line === null) {
+            const nextWord = lineTops.slice(index + 1).find((top) => top !== null);
+            line = nextWord ?? previousLine;
+        } else {
+            previousLine = line;
+        }
+
+        if (!lineGroups.has(line)) lineGroups.set(line, []);
+        lineGroups.get(line).push(token.node);
+    });
+
+    const lines = [...lineGroups.values()].map((nodes) => {
+        const line = document.createElement("span");
+        line.className = "water-line";
+        line.append(...nodes);
+        return line;
+    });
+
+    element.replaceChildren(...lines);
+});
 
 const observer = new IntersectionObserver((entries, currentObserver) => {
     entries.forEach((entry) => {
@@ -47,7 +65,6 @@ const observer = new IntersectionObserver((entries, currentObserver) => {
             currentObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.15 });
+}, { threshold: 0.5 });
 
-document.querySelectorAll(".content-section h1, .content-section h2, .content-section p")
-    .forEach((element) => observer.observe(element));
+document.querySelectorAll(".water-line").forEach((line) => observer.observe(line));

@@ -154,3 +154,57 @@ body.water .water-photos img {
     aspect-ratio: 4 / 3;
     object-fit: cover;
 }
+
+.water-line {
+    display: block;
+    white-space: nowrap;
+}
+
+.water-word {
+    white-space: nowrap;
+}
+
+.water-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em);
+    transition: opacity 350ms ease, transform 350ms ease;
+    transition-delay: var(--char-delay, 0ms);
+}
+
+.water-line.is-visible .water-char {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body.water .water-image:has(.water-photos) {
+    display: block;
+    min-height: 0;
+    aspect-ratio: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+
+body.water .water-photos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+body.water .water-photos img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .water-char {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
