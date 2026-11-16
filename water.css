@@ -183,3 +183,7 @@ body.water .water-photos img.is-visible {
         transition: none;
     }
 }
+
+body.water .water-photos img {
+    border-radius: 12px;
+}
