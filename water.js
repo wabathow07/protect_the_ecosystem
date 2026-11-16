@@ -72,9 +72,10 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.addEventListener("pointermove", (event) => {
         if (event.pointerType === "touch") return;
 
-        const now = performance.now();
-        if (now - lastBubbleTime < 55) return;
-        lastBubbleTime = now;
+        const nav = document.querySelector("nav");
+        if (nav && (nav.contains(event.target) || event.clientY <= nav.getBoundingClientRect().bottom)) {
+            return;
+        }
 
         const bubble = document.createElement("span");
         bubble.className = "cursor-bubble";

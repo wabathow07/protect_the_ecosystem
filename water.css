@@ -237,3 +237,8 @@ body.water .water-photos img {
 body.water-lightbox-open {
     overflow: hidden;
 }
+
+body.water nav {
+    position: relative;
+    z-index: 10000;
+}
