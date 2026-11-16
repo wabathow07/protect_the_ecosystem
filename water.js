@@ -58,13 +58,10 @@ textElements.forEach((element) => {
     element.replaceChildren(...lines);
 });
 
-const observer = new IntersectionObserver((entries, currentObserver) => {
+const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            currentObserver.unobserve(entry.target);
-        }
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.2 });
 
 document.querySelectorAll(".water-line").forEach((line) => observer.observe(line));
