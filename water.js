@@ -80,7 +80,7 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         bubble.className = "cursor-bubble";
         bubble.style.left = `${event.clientX}px`;
         bubble.style.top = `${event.clientY}px`;
-        bubble.style.setProperty("--bubble-size", `${4 + Math.random() * 9}px`);
+        bubble.style.setProperty("--bubble-size", `${4 + Math.random() * 15}px`);
         bubble.style.setProperty("--bubble-drift", `${Math.random() * 36 - 18}px`);
         bubble.style.setProperty("--bubble-duration", `${700 + Math.random() * 500}ms`);
 
