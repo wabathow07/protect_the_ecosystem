@@ -5,6 +5,11 @@ body.water {
     background: linear-gradient(180deg, #62c6df 0%, #063b66 100%) fixed;
 }
 
+body.water nav {
+    position: relative;
+    z-index: 10000;
+}
+
 body.water .content-section {
     box-sizing: border-box;
     height: auto !important;
@@ -37,18 +42,27 @@ body.water .water-shark {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
+    z-index: 2;
     width: clamp(90px, 16vw, 190px);
-    pointer-events: none;
+    cursor: pointer;
     will-change: left, top;
-    transition: left var(--travel-time, 4s) ease-in-out,
-        top var(--travel-time, 4s) ease-in-out;
+    transform: scaleX(calc(var(--travel-direction, 1) * var(--click-flip, 1)));
+    transition:
+        left var(--travel-time, 4s) ease-in-out,
+        top var(--travel-time, 4s) ease-in-out,
+        transform 300ms ease;
+}
+
+body.water .water-shark:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
 }
 
 body.water .water-shark img {
     display: block;
     width: 100%;
     height: auto;
+    pointer-events: none;
     animation: shark-wiggle 700ms ease-in-out infinite;
 }
 
@@ -56,12 +70,16 @@ body.water .water-shark img {
 
     0%,
     100% {
-        transform: scaleX(var(--direction, 1)) rotate(-3deg);
+        transform: scaleX(var(--bite-flip, 1)) rotate(-3deg);
     }
 
     50% {
-        transform: scaleX(var(--direction, 1)) rotate(3deg);
+        transform: scaleX(var(--bite-flip, 1)) rotate(3deg);
     }
+}
+
+body.water .water-shark.is-biting img {
+    --bite-flip: -1;
 }
 
 body.water .water-zone {
@@ -77,6 +95,7 @@ body.water .water-zone+.water-zone {
     margin-top: 1rem;
 }
 
+/* The first zone has its photo left; subsequent desktop zones alternate. */
 body.water .water-zone:nth-of-type(even) .water-copy {
     text-align: right;
 }
@@ -174,17 +193,15 @@ body.water .water-photos img.is-visible {
     height: var(--bubble-size);
     border: 1px solid rgba(115, 220, 235, 0.8);
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%,
-            rgba(255, 255, 255, 0.8),
-            rgba(90, 200, 220, 0.2) 65%);
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .8), rgba(90, 200, 220, .2) 65%);
     pointer-events: none;
     animation: cursor-bubble-rise var(--bubble-duration) ease-out forwards;
 }
 
 @keyframes cursor-bubble-rise {
     from {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(0.7);
+        opacity: .8;
+        transform: translate(-50%, -50%) scale(.7);
     }
 
     to {
@@ -200,7 +217,7 @@ body.water .water-photos img.is-visible {
 .water-lightbox {
     position: fixed;
     inset: 0;
-    z-index: 10000;
+    z-index: 10001;
     display: grid;
     place-items: center;
     padding: 1.5rem;
@@ -226,14 +243,12 @@ body.water .water-photos img.is-visible {
     margin: 1rem 0 0;
     color: white;
     font: 1.25rem Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-    -webkit-text-stroke: 0.5px #123;
-    text-shadow: 1px 1px 2px #123;
 }
 
 .water-lightbox-close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: .5rem;
+    right: .5rem;
     z-index: 1;
     padding: 0;
     border: 0;
@@ -246,18 +261,8 @@ body.water .water-photos img.is-visible {
     cursor: pointer;
 }
 
-.water-lightbox-close:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 4px;
-}
-
 body.water-lightbox-open {
     overflow: hidden;
-}
-
-body.water nav {
-    position: relative;
-    z-index: 10000;
 }
 
 @media (max-width: 700px) {
@@ -280,14 +285,6 @@ body.water nav {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body.water::before {
-        animation: none;
-    }
-
-    body.water .water-shark {
-        transition: none;
-    }
-
     body.water .water-shark img {
         animation: none;
     }
