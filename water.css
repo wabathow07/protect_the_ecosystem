@@ -18,6 +18,26 @@ body.water .content-section {
     background: transparent;
 }
 
+body.water ::selection {
+    color: #effcff;
+    background: #063b66;
+}
+
+body.water ::-moz-selection {
+    color: #effcff;
+    background: #063b66;
+}
+
+.water-line {
+    display: inline;
+}
+
+body.water .water-copy p {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+}
+
 body.water .water-title {
     position: relative;
     display: grid;
@@ -140,10 +160,6 @@ body.water .water-copy p {
     line-height: 1.7;
 }
 
-.water-line {
-    display: block;
-}
-
 .water-word {
     white-space: nowrap;
 }
@@ -156,7 +172,7 @@ body.water .water-copy p {
     transition-delay: var(--char-delay, 0ms);
 }
 
-.water-line.is-visible .water-char {
+.is-visible .water-char {
     opacity: 1;
     transform: translateY(0);
 }
@@ -242,7 +258,7 @@ body.water .water-photos img.is-visible {
 .water-lightbox-caption {
     margin: 1rem 0 0;
     color: white;
-    font: 1.25rem Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font: 2rem Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
 .water-lightbox-close {

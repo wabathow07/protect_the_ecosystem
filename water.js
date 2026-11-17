@@ -3,55 +3,37 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 // Wrap text into visual lines, then reveal each line as it scrolls into view.
 document.querySelectorAll(".content-section h1, .content-section h2, .content-section p")
     .forEach((element) => {
-        const parts = (element.textContent.match(/\s+|[^\s]+/g) || []);
-        const tokens = parts.map((part) => {
-            if (/^\s+$/.test(part)) {
-                return { node: document.createTextNode(part), word: false };
-            }
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        const textNodes = [];
 
-            const word = document.createElement("span");
-            word.className = "water-word";
+        while (walker.nextNode()) textNodes.push(walker.currentNode);
 
-            for (const character of part) {
-                const char = document.createElement("span");
-                char.className = "water-char";
-                char.textContent = character;
-                word.appendChild(char);
-            }
+        textNodes.forEach((textNode) => {
+            const fragment = document.createDocumentFragment();
+            const parts = textNode.nodeValue.split(/(\s+)/);
 
-            return { node: word, word: true };
-        });
-
-        element.replaceChildren(...tokens.map((token) => token.node));
-
-        const lines = [];
-        let currentLine = null;
-        let currentTop = null;
-
-        tokens.forEach((token) => {
-            if (token.word) {
-                const top = Math.round(token.node.getBoundingClientRect().top);
-
-                if (currentLine === null || top !== currentTop) {
-                    currentLine = document.createElement("span");
-                    currentLine.className = "water-line";
-                    lines.push(currentLine);
-                    currentTop = top;
+            parts.forEach((part) => {
+                if (!part || /^\s+$/.test(part)) {
+                    fragment.appendChild(document.createTextNode(part));
+                    return;
                 }
 
-                currentLine.appendChild(token.node);
-            } else if (currentLine) {
-                currentLine.appendChild(token.node);
-            }
-        });
+                const word = document.createElement("span");
+                word.className = "water-word";
 
-        lines.forEach((line) => {
-            [...line.querySelectorAll(".water-char")].forEach((character, index) => {
-                character.style.setProperty("--char-delay", `${Math.min(index * 18, 500)}ms`);
+                [...part].forEach((character, index) => {
+                    const char = document.createElement("span");
+                    char.className = "water-char";
+                    char.style.setProperty("--char-delay", `${index * 25}ms`);
+                    char.textContent = character;
+                    word.appendChild(char);
+                });
+
+                fragment.appendChild(word);
             });
-        });
 
-        element.replaceChildren(...lines);
+            textNode.parentNode.replaceChild(fragment, textNode);
+        });
     });
 
 const revealObserver = new IntersectionObserver((entries) => {
@@ -60,9 +42,9 @@ const revealObserver = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.2 });
 
-document.querySelectorAll(".water-line, .water-photos img").forEach((element) => {
-    revealObserver.observe(element);
-});
+document.querySelectorAll(
+    ".content-section h1, .content-section h2, .content-section p, .water-photos img"
+).forEach((element) => revealObserver.observe(element));
 
 // Roaming shark, with a click/keyboard flip.
 const shark = document.querySelector(".water-shark");
@@ -123,14 +105,14 @@ document.addEventListener("pointermove", (event) => {
     }
 
     const now = performance.now();
-    if (now - lastBubbleTime < 250) return;
+    if (now - lastBubbleTime < 500) return;
     lastBubbleTime = now;
 
     const bubble = document.createElement("span");
     bubble.className = "cursor-bubble";
     bubble.style.left = `${event.clientX}px`;
     bubble.style.top = `${event.clientY}px`;
-    bubble.style.setProperty("--bubble-size", `${3 * (10 + Math.random() * 16)}px`);
+    bubble.style.setProperty("--bubble-size", `${(10 + Math.random() * 18)}px`);
     bubble.style.setProperty("--bubble-drift", `${Math.random() * 36 - 18}px`);
     bubble.style.setProperty("--bubble-duration", `${1500 + Math.random() * 1000}ms`);
 
