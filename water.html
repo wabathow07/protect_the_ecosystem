@@ -33,7 +33,7 @@
             <h1>Life Under Water</h1>
         </section>
 
-        <section class="content-section water-zone">
+        <section class="content-section water-zone" data-depth-label="0-200 m">
             <div class="water-image" aria-label="Sea turtle and shark photos">
                 <div class="water-photos">
                     <img src="water-photos/sea-turtle.jpg" alt="Sea turtle swimming" data-animal="Sea Turtle">
@@ -49,7 +49,7 @@
             </div>
         </section>
 
-        <section class="content-section water-zone">
+        <section class="content-section water-zone" data-depth-label="200-1,000 m">
             <div class="water-image" aria-label="Image placeholder for the Twilight Zone">
                 <span>Twilight Zone image</span>
             </div>
@@ -60,7 +60,7 @@
             </div>
         </section>
 
-        <section class="content-section water-zone">
+        <section class="content-section water-zone" data-depth-label="1,000-4,000 m">
             <div class="water-image" aria-label="Image placeholder for the Midnight Zone">
                 <span>Midnight Zone image</span>
             </div>
@@ -72,7 +72,7 @@
             </div>
         </section>
 
-        <section class="content-section water-zone">
+        <section class="content-section water-zone" data-depth-label="3,000-6,000 m">
             <div class="water-image" aria-label="Image placeholder for the Abyss">
                 <span>Abyss image</span>
             </div>
@@ -84,7 +84,7 @@
             </div>
         </section>
 
-        <section class="content-section water-zone">
+        <section class="content-section water-zone" data-depth-label="6,000+ m">
             <div class="water-image" aria-label="Image placeholder for the Trenches">
                 <span>Trenches image</span>
             </div>
@@ -96,6 +96,18 @@
             </div>
         </section>
     </main>
+
+    <aside class="water-depth-meter" aria-label="Ocean depth">
+        <span class="water-depth-zone" aria-live="polite">Surface</span>
+        <output class="water-depth-reading">0 m</output>
+        <ol class="water-depth-ruler" aria-label="Depth by ocean zone">
+            <li aria-current="location">0</li>
+            <li>200</li>
+            <li>1k</li>
+            <li>4k</li>
+            <li>6k+</li>
+        </ol>
+    </aside>
 </body>
 
 </html>

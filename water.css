@@ -2,7 +2,93 @@ body.water {
     position: relative;
     isolation: isolate;
     font-size: clamp(1.15rem, 1rem + 0.4vw, 1.4rem);
-    background: linear-gradient(180deg, #62c6df 0%, #063b66 100%) fixed;
+    animation: none;
+    background-color: rgb(var(--water-depth-color, 98 198 223));
+    color: #b7edff;
+    transition: background-color 180ms linear;
+}
+
+body.water main {
+    box-sizing: border-box;
+    padding-right: clamp(3.5rem, 6vw, 5rem);
+}
+
+body.water h1,
+body.water h2,
+body.water p,
+body.water .navbar a {
+    color: #b7edff;
+}
+
+body.water .water-title h1 {
+    -webkit-text-stroke-color: #b7edff;
+}
+
+body.water .water-depth-meter {
+    position: fixed;
+    top: 50%;
+    right: 12px;
+    z-index: 10000;
+    display: grid;
+    justify-items: end;
+    gap: 0.2rem;
+    width: 58px;
+    transform: translateY(-50%);
+    color: #b7edff;
+    font: 0.7rem/1.2 Arial, Helvetica, sans-serif;
+    text-align: right;
+    text-shadow: 0 1px 5px #00131d;
+}
+
+body.water .water-depth-zone {
+    max-width: 100%;
+    font-weight: 700;
+}
+
+body.water .water-depth-reading {
+    font-variant-numeric: tabular-nums;
+}
+
+body.water .water-depth-ruler {
+    display: grid;
+    gap: 0;
+    width: 100%;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.water .water-depth-ruler li {
+    position: relative;
+    display: flex;
+    height: clamp(42px, 7vh, 60px);
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 25px;
+    opacity: 0.7;
+    transition: opacity 180ms ease, color 180ms ease;
+}
+
+body.water .water-depth-ruler li::after {
+    position: absolute;
+    right: 0;
+    width: 18px;
+    border-top: 1px solid currentColor;
+    content: "";
+}
+
+body.water .water-depth-ruler li:nth-child(odd)::after {
+    width: 25px;
+}
+
+body.water .water-depth-ruler li[aria-current="location"] {
+    opacity: 1;
+    color: #e4faff;
+    font-weight: 700;
+}
+
+body.water .water-depth-ruler li[aria-current="location"]::after {
+    border-top-width: 2px;
 }
 
 body.water nav {
@@ -134,10 +220,10 @@ body.water .water-image {
     min-height: 300px;
     aspect-ratio: 4 / 3;
     place-items: center;
-    border: 2px dashed #5b8790;
+    border: 2px dashed #39839c;
     border-radius: 12px;
-    background: #e8f4f4;
-    color: #315d66;
+    background: #062b42;
+    color: #b7edff;
 }
 
 body.water .water-image:has(.water-photos) {
@@ -282,6 +368,29 @@ body.water-lightbox-open {
 }
 
 @media (max-width: 700px) {
+    body.water main {
+        padding-right: 3.25rem;
+    }
+
+    body.water .water-depth-meter {
+        right: 6px;
+        width: 42px;
+        font-size: 0.62rem;
+    }
+
+    body.water .water-depth-ruler li {
+        height: clamp(38px, 6vh, 48px);
+        padding-right: 18px;
+    }
+
+    body.water .water-depth-ruler li::after {
+        width: 12px;
+    }
+
+    body.water .water-depth-ruler li:nth-child(odd)::after {
+        width: 17px;
+    }
+
     body.water .water-zone {
         grid-template-columns: 1fr;
     }
@@ -301,6 +410,14 @@ body.water-lightbox-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    body.water {
+        transition: none;
+    }
+
+    body.water .water-depth-ruler li {
+        transition: none;
+    }
+
     body.water .water-shark img {
         animation: none;
     }

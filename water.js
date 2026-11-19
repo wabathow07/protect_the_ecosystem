@@ -46,6 +46,64 @@ document.querySelectorAll(
     ".content-section h1, .content-section h2, .content-section p, .water-photos img"
 ).forEach((element) => revealObserver.observe(element));
 
+const depthZones = [...document.querySelectorAll(".water-zone")];
+const depthMeter = document.querySelector(".water-depth-meter");
+const depthZoneLabel = depthMeter?.querySelector(".water-depth-zone");
+const depthReading = depthMeter?.querySelector(".water-depth-reading");
+const depthTicks = [...(depthMeter?.querySelectorAll(".water-depth-ruler li") || [])];
+const colorStops = [
+    { at: 0, rgb: [98, 198, 223] },
+    { at: 0.2, rgb: [8, 77, 111] },
+    { at: 0.5, rgb: [4, 39, 61] },
+    { at: 0.75, rgb: [1, 15, 25] },
+    { at: 1, rgb: [0, 0, 0] },
+];
+let depthFrame = 0;
+
+function updateOceanDepth() {
+    depthFrame = 0;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+    const stopIndex = colorStops.findIndex((stop) => stop.at >= progress);
+    const upperStop = colorStops[Math.max(1, stopIndex) - 1];
+    const lowerStop = colorStops[Math.max(1, stopIndex)];
+    const blend = Math.min(1, (progress - upperStop.at) / (lowerStop.at - upperStop.at));
+    const rgb = upperStop.rgb.map((channel, index) =>
+        Math.round(channel + (lowerStop.rgb[index] - channel) * blend)
+    );
+
+    document.body.style.setProperty("--water-depth-color", rgb.join(" "));
+
+    const marker = window.innerHeight * 0.5;
+    let activeIndex = depthZones.findIndex((zone) => {
+        const bounds = zone.getBoundingClientRect();
+        return bounds.top <= marker && bounds.bottom >= marker;
+    });
+
+    if (activeIndex < 0 && depthZones.length) {
+        activeIndex = window.scrollY < depthZones[0].offsetTop ? -1 : depthZones.length - 1;
+    }
+
+    const activeZone = depthZones[activeIndex];
+    depthZoneLabel.textContent = activeZone?.querySelector("h2")?.textContent.trim() || "Surface";
+    depthReading.textContent = activeZone?.dataset.depthLabel || "0 m";
+    depthTicks.forEach((tick, index) => {
+        if (index === Math.max(0, activeIndex)) {
+            tick.setAttribute("aria-current", "location");
+        } else {
+            tick.removeAttribute("aria-current");
+        }
+    });
+}
+
+function scheduleOceanDepthUpdate() {
+    if (!depthFrame) depthFrame = window.requestAnimationFrame(updateOceanDepth);
+}
+
+window.addEventListener("scroll", scheduleOceanDepthUpdate, { passive: true });
+window.addEventListener("resize", scheduleOceanDepthUpdate);
+scheduleOceanDepthUpdate();
+
 // Roaming shark, with a click/keyboard flip.
 const shark = document.querySelector(".water-shark");
 const sharkImage = shark?.querySelector("img");
