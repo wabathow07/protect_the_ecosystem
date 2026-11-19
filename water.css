@@ -24,6 +24,10 @@ body.water .navbar a {
     color: #b7edff;
 }
 
+body.water .navbar a:hover {
+    color: #1c7793;
+}
+
 body.water .water-title h1 {
     -webkit-text-stroke-color: #b7edff;
 }
