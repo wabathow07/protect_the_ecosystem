@@ -7,6 +7,16 @@ body {
     animation-timeline: scroll(root);
 }
 
+body.home ::selection {
+    color: #24231c;
+    background: #d6c779;
+}
+
+body.home ::-moz-selection {
+    color: #24231c;
+    background: #d6c779;
+}
+
 h1 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 600%;
