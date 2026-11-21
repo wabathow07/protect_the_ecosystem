@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <div id="myVideo">
+        <video id="backgroundVideo" autoplay loop muted playsinline></video>
+    </div>
+
     <nav class="container-fluid">
         <div class="navbar">
             <div class="brand">
@@ -40,6 +44,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const videos = [
+            "videos/land_tigers.mp4",
+            "videos/land_deer.mp4",
+            "videos/land_penguin.mp4"
+        ];
+
+        const video = document.getElementById("backgroundVideo");
+        video.src = videos[Math.floor(Math.random() * videos.length)];
+        video.load();
+    </script>
 </body>
 
 </html>
