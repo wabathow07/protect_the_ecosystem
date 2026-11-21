@@ -424,14 +424,6 @@ body.water .water-photo-card {
         opacity 450ms ease;
 }
 
-body.water .water-photo-card:nth-child(even) {
-    --photo-rotation: 4deg;
-}
-
-body.water .water-photo-card:nth-child(odd) {
-    --photo-rotation: -4deg;
-}
-
 body.water .water-photo-card.is-active {
     z-index: 2;
     opacity: 1;
