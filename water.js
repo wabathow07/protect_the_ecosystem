@@ -104,6 +104,16 @@ window.addEventListener("scroll", scheduleOceanDepthUpdate, { passive: true });
 window.addEventListener("resize", scheduleOceanDepthUpdate);
 scheduleOceanDepthUpdate();
 
+depthTicks.forEach((tick, index) => {
+    const button = tick.querySelector("button");
+    button?.addEventListener("click", () => {
+        depthZones[index]?.scrollIntoView({
+            behavior: reducedMotion ? "auto" : "smooth",
+            block: "center"
+        });
+    });
+});
+
 // Roaming shark, with a click/keyboard flip.
 const shark = document.querySelector(".water-shark");
 const sharkImage = shark?.querySelector("img");
