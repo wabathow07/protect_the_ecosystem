@@ -43,7 +43,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll(
-    ".content-section h1, .content-section h2, .content-section p, .water-photos img"
+    ".content-section h1, .content-section h2, .content-section p, .water-photos img, .water-animal-toggle, .water-photo-arrow"
 ).forEach((element) => revealObserver.observe(element));
 
 const depthZones = [...document.querySelectorAll(".water-zone")];
