@@ -192,6 +192,11 @@ document.querySelectorAll(".water-photos").forEach((photoCarousel) => {
 
     if (!photoStack || !previousPhotoButton || !nextPhotoButton || !photoCards.length) return;
 
+    photoCards.forEach((card) => {
+        const angle = (1.5 + Math.random() * 2.5) * (Math.random() < 0.5 ? -1 : 1);
+        card.style.setProperty("--photo-rotation", `${angle.toFixed(2)}deg`);
+    });
+
     function showPhoto(index, { singlePhoto = false } = {}) {
         activePhotoIndex = (index + photoCards.length) % photoCards.length;
         photoStack.classList.toggle("is-single-photo", singlePhoto);
