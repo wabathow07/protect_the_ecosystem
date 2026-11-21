@@ -80,13 +80,9 @@ body.water .water-depth-ruler li {
 body.water .water-depth-ruler li::after {
     position: absolute;
     right: 0;
-    width: 18px;
+    width: 9px;
     border-top: 1px solid currentColor;
     content: "";
-}
-
-body.water .water-depth-ruler li:nth-child(odd)::after {
-    width: 25px;
 }
 
 body.water .water-depth-ruler li[aria-current="location"] {
@@ -96,6 +92,7 @@ body.water .water-depth-ruler li[aria-current="location"] {
 }
 
 body.water .water-depth-ruler li[aria-current="location"]::after {
+    width: 25px;
     border-top-width: 2px;
 }
 
@@ -160,11 +157,9 @@ body.water .water-shark {
     width: clamp(90px, 16vw, 190px);
     cursor: pointer;
     will-change: left, top;
-    transform: scaleX(calc(var(--travel-direction, 1) * var(--click-flip, 1)));
     transition:
         left var(--travel-time, 4s) ease-in-out,
-        top var(--travel-time, 4s) ease-in-out,
-        transform 300ms ease;
+        top var(--travel-time, 4s) ease-in-out;
 }
 
 body.water .water-shark:focus-visible {
@@ -177,6 +172,7 @@ body.water .water-shark img {
     width: 100%;
     height: auto;
     pointer-events: none;
+    filter: drop-shadow(0 8px 8px rgb(0 15 28 / 45%));
     animation: shark-wiggle 700ms ease-in-out infinite;
 }
 
@@ -184,11 +180,11 @@ body.water .water-shark img {
 
     0%,
     100% {
-        transform: scaleX(var(--bite-flip, 1)) rotate(-3deg);
+        transform: scaleX(calc(var(--travel-direction, 1) * var(--bite-flip, 1))) rotate(-3deg);
     }
 
     50% {
-        transform: scaleX(var(--bite-flip, 1)) rotate(3deg);
+        transform: scaleX(calc(var(--travel-direction, 1) * var(--bite-flip, 1))) rotate(3deg);
     }
 }
 
@@ -209,9 +205,14 @@ body.water .water-zone+.water-zone {
     margin-top: 1rem;
 }
 
-/* The first zone has its photo left; subsequent desktop zones alternate. */
+/* Alternate photo and copy positions on wide screens. */
 body.water .water-zone:nth-of-type(even) .water-copy {
     text-align: right;
+}
+
+body.water .water-zone:nth-of-type(even) .water-zone-heading {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
 }
 
 body.water .water-zone:nth-of-type(odd) .water-image {
@@ -246,7 +247,122 @@ body.water .water-image:has(.water-photos) {
 
 body.water .water-copy h2 {
     margin-top: 0;
+    margin-bottom: 0;
     font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+body.water .water-copy {
+    position: relative;
+}
+
+body.water .water-zone-heading {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .55rem;
+    margin-bottom: 1rem;
+}
+
+body.water .water-zone-heading h2 {
+    margin: 0;
+}
+
+body.water .water-animal-toggle {
+    display: grid;
+    flex: 0 0 auto;
+    width: 1.55rem;
+    height: 1.55rem;
+    place-items: center;
+    padding: 0;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+    color: #e4faff;
+    font: 700 .9rem/1 Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    transition: color 180ms ease, background-color 180ms ease;
+}
+
+body.water .water-animal-toggle:hover,
+body.water .water-animal-toggle[aria-expanded="true"] {
+    background: #e4faff;
+    color: #063b52;
+}
+
+body.water .water-animal-toggle:focus-visible {
+    outline: 2px solid #e4faff;
+    outline-offset: 3px;
+}
+
+body.water .water-animal-popover[hidden] {
+    display: none;
+}
+
+body.water .water-animal-popover {
+    position: absolute;
+    top: calc(100% + .45rem);
+    left: 0;
+    z-index: 20;
+    box-sizing: border-box;
+    width: min(100%, 480px);
+    max-height: min(60vh, 480px);
+    overflow-y: auto;
+    padding: 1rem 1.2rem;
+    border: 1px solid rgb(183 237 255 / 55%);
+    border-radius: 12px;
+    background: rgb(3 31 48 / 96%);
+    color: #e4faff;
+    box-shadow: 0 12px 32px rgb(0 10 20 / 45%);
+    text-align: left;
+    text-shadow: none;
+    font-size: .95rem;
+    line-height: 1.45;
+}
+
+body.water .water-animal-popover h3 {
+    margin: 0 0 .6rem;
+    color: #e4faff;
+    font: 700 1rem/1.3 Arial, Helvetica, sans-serif;
+    text-decoration: underline;
+    text-underline-offset: .15em;
+}
+
+body.water .water-animal-popover ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+body.water .water-animal-popover li+li {
+    margin-top: .2rem;
+}
+
+body.water .water-animal-popover li ul {
+    margin: .15rem 0 .3rem;
+    font-size: .92em;
+}
+
+body.water .water-animal-name {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+    font: inherit;
+    line-height: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: color 160ms ease;
+}
+
+body.water button.water-animal-name:hover {
+    color: #1c7793;
+}
+
+body.water .water-zone:nth-of-type(even) .water-animal-popover {
+    right: 0;
+    left: auto;
 }
 
 body.water .water-copy p {
@@ -273,25 +389,133 @@ body.water .water-copy p {
 
 body.water .water-photos {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 1rem;
     width: 100%;
+}
+
+body.water .water-photo-stack {
+    position: relative;
+    width: min(100%, 480px);
+    aspect-ratio: 4 / 3;
+    margin: 0 auto;
+    touch-action: pan-y;
+    perspective: 900px;
+}
+
+body.water .water-photo-card {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 4px;
+    border: 0;
+    border-radius: 22px;
+    background: #f7fbfc;
+    box-shadow: 0 16px 35px rgb(0 13 24 / 35%);
+    cursor: zoom-in;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(20px, 8px, -50px) rotate(5deg) scale(.92);
+    transition:
+        transform 650ms cubic-bezier(.2, .8, .2, 1),
+        opacity 450ms ease;
+}
+
+body.water .water-photo-card:nth-child(even) {
+    --photo-rotation: 4deg;
+}
+
+body.water .water-photo-card:nth-child(odd) {
+    --photo-rotation: -4deg;
+}
+
+body.water .water-photo-card.is-active {
+    z-index: 2;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) rotate(var(--photo-rotation)) scale(1);
+}
+
+body.water .water-photo-card.is-next {
+    z-index: 1;
+    opacity: .95;
+    transform: translate3d(18px, 13px, -35px) rotate(calc(var(--photo-rotation) * -1)) scale(.94);
+}
+
+body.water .water-photo-stack.is-single-photo .water-photo-card:not(.is-active) {
+    visibility: hidden;
+    opacity: 0;
+    transition: none;
+}
+
+body.water .water-photo-card:focus-visible,
+body.water .water-photo-arrow:focus-visible {
+    outline: 3px solid #e4faff;
+    outline-offset: 5px;
 }
 
 body.water .water-photos img {
     display: block;
     width: 100%;
-    height: auto;
-    border-radius: 12px;
-    cursor: zoom-in;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px) scale(.98);
     transition: opacity 800ms ease, transform 800ms ease;
+}
+
+body.water .water-photos img[data-photo="dumbo"] {
+    object-fit: contain;
+    background: #06121a;
 }
 
 body.water .water-photos img.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+}
+
+body.water .water-photo-controls {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    width: min(100%, 480px);
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    margin: 0 auto;
+}
+
+body.water .water-photo-arrow {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid rgb(228 250 255 / 70%);
+    border-radius: 50%;
+    background: rgb(0 29 47 / 60%);
+    color: #e4faff;
+    box-shadow: 0 5px 16px rgb(0 13 24 / 25%);
+    cursor: pointer;
+    transition: background-color 200ms ease, transform 200ms ease;
+}
+
+body.water .water-photo-arrow:hover {
+    background: #1c7793;
+}
+
+body.water .water-photo-previous:hover {
+    transform: translateX(-2px);
+}
+
+body.water .water-photo-next:hover {
+    transform: translateX(2px);
+}
+
+body.water .water-photo-arrow span {
+    font: 1rem/1 Arial, Helvetica, sans-serif;
 }
 
 .cursor-bubble {
@@ -391,25 +615,31 @@ body.water-lightbox-open {
         padding-right: 18px;
     }
 
-    body.water .water-depth-ruler li::after {
-        width: 12px;
-    }
-
-    body.water .water-depth-ruler li:nth-child(odd)::after {
-        width: 17px;
+    body.water .water-depth-ruler li[aria-current="location"]::after {
+        width: 20px;
     }
 
     body.water .water-zone {
         grid-template-columns: 1fr;
     }
 
-    body.water .water-zone .water-image,
-    body.water .water-zone .water-copy {
+    body.water .water-zone:nth-of-type(n) .water-image {
         order: 0;
     }
 
-    body.water .water-zone .water-copy {
+    body.water .water-zone:nth-of-type(n) .water-copy {
+        order: 1;
         text-align: left;
+    }
+
+    body.water .water-zone:nth-of-type(n) .water-zone-heading {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    body.water .water-zone:nth-of-type(n) .water-animal-popover {
+        right: auto;
+        left: 0;
     }
 
     body.water .water-image {
@@ -434,6 +664,11 @@ body.water-lightbox-open {
     body.water .water-photos img {
         opacity: 1;
         transform: none;
+        transition: none;
+    }
+
+    body.water .water-photo-card,
+    body.water .water-photo-arrow {
         transition: none;
     }
 }
