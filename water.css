@@ -278,7 +278,7 @@ body.water .water-animal-toggle {
     padding: 0;
     border: 1px solid currentColor;
     border-radius: 50%;
-    background: transparent;
+    background: rgb(var(--water-depth-color, 98 198 223) / 55%);
     color: #e4faff;
     font: 700 .9rem/1 Helvetica, Arial, sans-serif;
     cursor: pointer;
@@ -287,8 +287,8 @@ body.water .water-animal-toggle {
 
 body.water .water-animal-toggle:hover,
 body.water .water-animal-toggle[aria-expanded="true"] {
-    background: #e4faff;
-    color: #063b52;
+    background: rgb(var(--water-depth-color, 98 198 223));
+    color: #e4faff;
 }
 
 body.water .water-animal-toggle:focus-visible {
@@ -312,7 +312,7 @@ body.water .water-animal-popover {
     padding: 1rem 1.2rem;
     border: 1px solid rgb(183 237 255 / 55%);
     border-radius: 12px;
-    background: rgb(3 31 48 / 96%);
+    background: rgb(var(--water-depth-color, 98 198 223) / 96%);
     color: #e4faff;
     box-shadow: 0 12px 32px rgb(0 10 20 / 45%);
     text-align: left;
