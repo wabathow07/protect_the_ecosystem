@@ -5,6 +5,7 @@ html {
 body.water {
     position: relative;
     isolation: isolate;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: clamp(1.15rem, 1rem + 0.4vw, 1.4rem);
     animation: none;
     background-color: rgb(var(--water-depth-color, 98 198 223));
@@ -43,7 +44,7 @@ body.water .water-depth-meter {
     width: 58px;
     transform: translateY(-50%);
     color: #b7edff;
-    font: 0.7rem/1.2 Arial, Helvetica, sans-serif;
+    font: 0.7rem/1.2 Helvetica, Arial, sans-serif;
     text-align: right;
     text-shadow: 0 1px 5px #00131d;
 }
@@ -279,7 +280,7 @@ body.water .water-animal-toggle {
     border-radius: 50%;
     background: transparent;
     color: #e4faff;
-    font: 700 .9rem/1 Arial, Helvetica, sans-serif;
+    font: 700 .9rem/1 Helvetica, Arial, sans-serif;
     cursor: pointer;
     transition: color 180ms ease, background-color 180ms ease;
 }
@@ -323,7 +324,7 @@ body.water .water-animal-popover {
 body.water .water-animal-popover h3 {
     margin: 0 0 .6rem;
     color: #e4faff;
-    font: 700 1rem/1.3 Arial, Helvetica, sans-serif;
+    font: 700 1rem/1.3 Helvetica, Arial, sans-serif;
     text-decoration: underline;
     text-underline-offset: .15em;
 }
@@ -356,7 +357,7 @@ body.water .water-animal-name {
     transition: color 160ms ease;
 }
 
-body.water button.water-animal-name:hover {
+body.water .water-animal-name:hover {
     color: #1c7793;
 }
 
@@ -515,7 +516,7 @@ body.water .water-photo-next:hover {
 }
 
 body.water .water-photo-arrow span {
-    font: 1rem/1 Arial, Helvetica, sans-serif;
+    font: 1rem/1 Helvetica, Arial, sans-serif;
 }
 
 .cursor-bubble {
@@ -589,7 +590,7 @@ body.water .water-photo-arrow span {
     background: transparent;
     color: white;
     box-shadow: none;
-    font: 2.5rem/1 Arial, sans-serif;
+    font: 2.5rem/1 Helvetica, Arial, sans-serif;
     -webkit-text-stroke: 1px #123;
     text-shadow: 1px 1px 3px #123;
     cursor: pointer;
@@ -623,21 +624,21 @@ body.water-lightbox-open {
         grid-template-columns: 1fr;
     }
 
-    body.water .water-zone:nth-of-type(n) .water-image {
+    body.water .water-zone .water-image {
         order: 0;
     }
 
-    body.water .water-zone:nth-of-type(n) .water-copy {
+    body.water .water-zone .water-copy {
         order: 1;
         text-align: left;
     }
 
-    body.water .water-zone:nth-of-type(n) .water-zone-heading {
+    body.water .water-zone-heading {
         flex-direction: row;
         justify-content: flex-start;
     }
 
-    body.water .water-zone:nth-of-type(n) .water-animal-popover {
+    body.water .water-zone .water-animal-popover {
         right: auto;
         left: 0;
     }
