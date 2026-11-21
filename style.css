@@ -156,11 +156,17 @@ a {
 }
 
 .info .land {
-    background-color: rgb(46, 80, 56);
+    overflow: hidden;
+    background:
+        linear-gradient(rgb(0 16 32 / 38%), rgb(0 16 32 / 55%)),
+        url("land-photos/land.jpg") center / cover no-repeat;
 }
 
 .info .water {
-    background-color: rgb(50, 69, 93);
+    overflow: hidden;
+    background:
+        linear-gradient(rgb(0 16 32 / 38%), rgb(0 16 32 / 55%)),
+        url("water-photos/water.jpg") center / cover no-repeat;
 }
 
 .info .land a,
