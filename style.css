@@ -153,6 +153,13 @@ a {
     justify-content: center;
     align-items: center;
     text-align: center;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.info .land:hover,
+.info .water:hover {
+    transform: scale(1.04);
+    box-shadow: 0 14px 30px rgb(0 0 0 / 45%);
 }
 
 .info .land {
@@ -203,14 +210,27 @@ a {
     justify-content: center;
     align-items: center;
     text-align: center;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.contact .clea:hover,
+.contact .sunny:hover {
+    transform: scale(1.04);
+    box-shadow: 0 14px 30px rgb(0 0 0 / 45%);
 }
 
 .contact .clea {
-    background-color: rgb(169, 92, 92);
+    overflow: hidden;
+    background:
+        linear-gradient(rgb(0 16 32 / 38%), rgb(0 16 32 / 55%)),
+        url("water-photos/land.jpg") center / cover no-repeat;
 }
 
 .contact .sunny {
-    background-color: rgb(122, 171, 100);
+    overflow: hidden;
+    background:
+        linear-gradient(rgb(0 16 32 / 38%), rgb(0 16 32 / 55%)),
+        url("water-photos/water.jpg") center / cover no-repeat;
 }
 
 .contact .clea a,
