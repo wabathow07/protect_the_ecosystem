@@ -626,21 +626,21 @@ body.water-lightbox-open {
         grid-template-columns: 1fr;
     }
 
-    body.water .water-zone .water-image {
+    body.water .water-zone:nth-of-type(n) .water-image {
         order: 0;
     }
 
-    body.water .water-zone .water-copy {
+    body.water .water-zone:nth-of-type(n) .water-copy {
         order: 1;
         text-align: left;
     }
 
-    body.water .water-zone-heading {
+    body.water .water-zone:nth-of-type(n) .water-zone-heading {
         flex-direction: row;
         justify-content: flex-start;
     }
 
-    body.water .water-zone .water-animal-popover {
+    body.water .water-zone:nth-of-type(n) .water-animal-popover {
         right: auto;
         left: 0;
     }
