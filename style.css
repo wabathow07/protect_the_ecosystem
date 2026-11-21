@@ -159,7 +159,7 @@ a {
     overflow: hidden;
     background:
         linear-gradient(rgb(0 16 32 / 38%), rgb(0 16 32 / 55%)),
-        url("land-photos/land.jpg") center / cover no-repeat;
+        url("water-photos/land.jpg") center / cover no-repeat;
 }
 
 .info .water {
