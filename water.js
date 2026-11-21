@@ -178,6 +178,133 @@ document.addEventListener("pointermove", (event) => {
     bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
 });
 
+// Give each zone with photos its own swipeable, selectable instant stack.
+document.querySelectorAll(".water-photos").forEach((photoCarousel) => {
+    const photoStack = photoCarousel.querySelector(".water-photo-stack");
+    const photoCards = [...(photoStack?.querySelectorAll(".water-photo-card") || [])];
+    const previousPhotoButton = photoCarousel.querySelector(".water-photo-previous");
+    const nextPhotoButton = photoCarousel.querySelector(".water-photo-next");
+    const animalButtons = photoCarousel.closest(".water-zone")
+        ?.querySelectorAll(".water-animal-popover .water-animal-name") || [];
+    let activePhotoIndex = 0;
+    let swipeStart = null;
+    let suppressPhotoClick = false;
+
+    if (!photoStack || !previousPhotoButton || !nextPhotoButton || !photoCards.length) return;
+
+    function showPhoto(index, { singlePhoto = false } = {}) {
+        activePhotoIndex = (index + photoCards.length) % photoCards.length;
+        photoStack.classList.toggle("is-single-photo", singlePhoto);
+        photoCards.forEach((card, cardIndex) => {
+            const isActive = cardIndex === activePhotoIndex;
+            const isNext = cardIndex === (activePhotoIndex + 1) % photoCards.length;
+            card.classList.toggle("is-active", isActive);
+            card.classList.toggle("is-next", isNext && !isActive && !singlePhoto);
+            card.setAttribute("aria-hidden", String(!isActive));
+            card.tabIndex = isActive ? 0 : -1;
+        });
+
+        const activePhoto = photoCards[activePhotoIndex].querySelector("img").dataset.photo;
+        animalButtons.forEach((animal) => {
+            animal.setAttribute("aria-pressed", String(animal.dataset.photo === activePhoto));
+        });
+
+        const previousIndex = (activePhotoIndex - 1 + photoCards.length) % photoCards.length;
+        const nextIndex = (activePhotoIndex + 1) % photoCards.length;
+        const previousCaption = photoCards[previousIndex].querySelector("img").dataset.animal;
+        const nextCaption = photoCards[nextIndex].querySelector("img").dataset.animal;
+        previousPhotoButton.setAttribute("aria-label", `Show previous photo: ${previousCaption}`);
+        nextPhotoButton.setAttribute("aria-label", `Show next photo: ${nextCaption}`);
+        previousPhotoButton.disabled = photoCards.length < 2;
+        nextPhotoButton.disabled = photoCards.length < 2;
+    }
+
+    showPhoto(activePhotoIndex);
+
+    previousPhotoButton.addEventListener("click", () => {
+        showPhoto(activePhotoIndex - 1);
+    });
+
+    nextPhotoButton.addEventListener("click", () => {
+        showPhoto(activePhotoIndex + 1);
+    });
+
+    photoStack.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            showPhoto(activePhotoIndex + (event.key === "ArrowRight" ? 1 : -1));
+        }
+    });
+
+    photoStack.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) return;
+        swipeStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+    });
+
+    window.addEventListener("pointerup", (event) => {
+        if (!swipeStart || event.pointerId !== swipeStart.pointerId) return;
+
+        const distance = event.clientX - swipeStart.x;
+        const verticalDistance = event.clientY - swipeStart.y;
+        swipeStart = null;
+        if (Math.abs(distance) < 45 || Math.abs(distance) <= Math.abs(verticalDistance)) return;
+
+        showPhoto(activePhotoIndex + (distance < 0 ? 1 : -1));
+        suppressPhotoClick = true;
+        setTimeout(() => {
+            suppressPhotoClick = false;
+        }, 0);
+    });
+
+    window.addEventListener("pointercancel", () => {
+        swipeStart = null;
+    });
+
+    photoCarousel.addEventListener("click", (event) => {
+        if (!suppressPhotoClick) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        suppressPhotoClick = false;
+    }, true);
+
+    animalButtons.forEach((animal) => {
+        animal.addEventListener("click", () => {
+            const photoIndex = photoCards.findIndex((card) =>
+                card.querySelector("img").dataset.photo === animal.dataset.photo
+            );
+            if (photoIndex >= 0) showPhoto(photoIndex, { singlePhoto: true });
+        });
+    });
+});
+
+// Keep the animal information popovers mutually exclusive.
+const animalToggles = [...document.querySelectorAll(".water-animal-toggle")];
+
+function closeAnimalPopovers() {
+    animalToggles.forEach((toggle) => {
+        toggle.setAttribute("aria-expanded", "false");
+        document.getElementById(toggle.getAttribute("aria-controls")).hidden = true;
+    });
+}
+
+animalToggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+        const popover = document.getElementById(toggle.getAttribute("aria-controls"));
+        const willOpen = toggle.getAttribute("aria-expanded") !== "true";
+        closeAnimalPopovers();
+        toggle.setAttribute("aria-expanded", String(willOpen));
+        popover.hidden = !willOpen;
+    });
+});
+
+document.addEventListener("click", (event) => {
+    if (!event.target.closest?.(".water-zone-heading")) closeAnimalPopovers();
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeAnimalPopovers();
+});
+
 // Photo lightbox.
 const lightbox = document.createElement("div");
 lightbox.className = "water-lightbox";
@@ -206,10 +333,11 @@ function closeLightbox() {
 }
 
 document.addEventListener("click", (event) => {
-    const photo = event.target.closest?.(".water-photos img");
+    const photoCard = event.target.closest?.(".water-photo-card");
+    const photo = photoCard?.querySelector("img") || event.target.closest?.(".water-photos img");
 
     if (photo) {
-        lastFocusedPhoto = photo;
+        lastFocusedPhoto = photoCard || photo;
         lightboxImage.src = photo.currentSrc || photo.src;
         lightboxImage.alt = photo.alt;
         lightboxCaption.textContent = photo.dataset.animal || photo.alt;
