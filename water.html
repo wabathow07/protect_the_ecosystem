@@ -35,13 +35,57 @@
 
         <section class="content-section water-zone" data-depth-label="0-200 m">
             <div class="water-image" aria-label="Sea turtle and shark photos">
-                <div class="water-photos">
-                    <img src="water-photos/sea-turtle.jpg" alt="Sea turtle swimming" data-animal="Sea Turtle">
-                    <img src="water-photos/shark.jpg" alt="Shark swimming" data-animal="Shark">
+                <div class="water-photos" role="region" aria-label="Sunlit Zone photos">
+                    <div class="water-photo-stack">
+                        <button class="water-photo-card" type="button" aria-label="View Sea Turtle photo">
+                            <img src="water-photos/sea-turtle.jpg" alt="Sea turtle swimming" data-animal="Sea Turtle" data-photo="sea-turtle">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Shark photo">
+                            <img src="water-photos/shark.jpg" alt="Shark swimming" data-animal="Shark" data-photo="shark">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Dolphin photo">
+                            <img src="water-photos/dolphin.jpeg" alt="Dolphin swimming" data-animal="Dolphin" data-photo="dolphin">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Coral photo">
+                            <img src="water-photos/coral.jpg" alt="Coral reef" data-animal="Coral" data-photo="coral">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Jellyfish photo">
+                            <img src="water-photos/jellyfish.jpg" alt="Jellyfish drifting underwater" data-animal="Jellyfish" data-photo="jellyfish">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Zooplankton photo">
+                            <img src="water-photos/zooplankton.jpeg" alt="Zooplankton" data-animal="Zooplankton" data-photo="zooplankton">
+                        </button>
+                    </div>
+                    <div class="water-photo-controls">
+                        <button class="water-photo-arrow water-photo-previous" type="button" aria-label="Show previous photo">
+                            <span aria-hidden="true">←</span>
+                        </button>
+                        <button class="water-photo-arrow water-photo-next" type="button" aria-label="Show next photo">
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="water-copy">
-                <h2>Sunlit Zone</h2>
+                <div class="water-zone-heading">
+                    <h2 id="sunlit-zone-title">Sunlit Zone</h2>
+                    <button class="water-animal-toggle" type="button" aria-label="Show animals inhabiting Sunlit Zone" aria-expanded="false" aria-controls="sunlit-zone-animals">i</button>
+                    <div class="water-animal-popover" id="sunlit-zone-animals" role="region" aria-labelledby="sunlit-zone-title" hidden>
+                        <h3>Animals inhabiting Sunlit Zone</h3>
+                        <ul>
+                            <li><button class="water-animal-name" type="button" data-photo="shark">Fish and sharks</button></li>
+                            <li><button class="water-animal-name" type="button" data-photo="dolphin">Marine mammals</button></li>
+                            <li><span class="water-animal-category">Reptiles and invertebrates</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="sea-turtle">Sea turtles</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="jellyfish">Jellyfish</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="coral">Coral</button></li>
+                                </ul>
+                            </li>
+                            <li><button class="water-animal-name" type="button" data-photo="zooplankton">Phytoplankton and zooplankton</button></li>
+                        </ul>
+                    </div>
+                </div>
                 <p>The sunlit zone covers the upper 200 meters where organisms which grow by sunlight dwell. With
                     climates changing, this zone has been darkening and contracting. This creates alterations in the
                     animals' natural habitats, making their ecosystems a less safe and stable environment to live in.
@@ -50,22 +94,140 @@
         </section>
 
         <section class="content-section water-zone" data-depth-label="200-1,000 m">
-            <div class="water-image" aria-label="Image placeholder for the Twilight Zone">
-                <span>Twilight Zone image</span>
+            <div class="water-image" aria-label="Twilight Zone photos">
+                <div class="water-photos" role="region" aria-label="Twilight Zone photos">
+                    <div class="water-photo-stack">
+                        <button class="water-photo-card" type="button" aria-label="View Plankton photo">
+                            <img src="water-photos/plankton.jpg" alt="Zooplankton drifting in the twilight zone" data-animal="Zooplankton" data-photo="plankton">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Glowing Fish photo">
+                            <img src="water-photos/glowingfish.jpg" alt="Glowing fish in the twilight zone" data-animal="Glowing Fish" data-photo="glowingfish">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Lanternfish photo">
+                            <img src="water-photos/lanternfish.jpeg" alt="Lanternfish" data-animal="Lanternfish" data-photo="lanternfish">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Barreleye Fish photo">
+                            <img src="water-photos/barreleyefish.jpeg" alt="Barreleye fish" data-animal="Barreleye Fish" data-photo="barreleyefish">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Squid photo">
+                            <img src="water-photos/squid.jpeg" alt="Cockeyed squid" data-animal="Cockeyed Squid" data-photo="squid">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Bloody-belly Comb Jelly photo">
+                            <img src="water-photos/bloodjelly.jpg" alt="Bloody-belly comb jelly" data-animal="Bloody-belly Comb Jelly" data-photo="bloodjelly">
+                        </button>
+                    </div>
+                    <div class="water-photo-controls">
+                        <button class="water-photo-arrow water-photo-previous" type="button" aria-label="Show previous photo">
+                            <span aria-hidden="true">←</span>
+                        </button>
+                        <button class="water-photo-arrow water-photo-next" type="button" aria-label="Show next photo">
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="water-copy">
-                <h2>Twilight Zone</h2>
+                <div class="water-zone-heading">
+                    <h2 id="twilight-zone-title">Twilight Zone</h2>
+                    <button class="water-animal-toggle" type="button" aria-label="Show animals inhabiting Twilight Zone" aria-expanded="false" aria-controls="twilight-zone-animals">i</button>
+                    <div class="water-animal-popover" id="twilight-zone-animals" role="region" aria-labelledby="twilight-zone-title" hidden>
+                        <h3>Animals inhabiting Twilight Zone</h3>
+                        <ul>
+                            <li><button class="water-animal-name" type="button" data-photo="plankton">Zooplankton</button></li>
+                            <li><button class="water-animal-name" type="button" data-photo="glowingfish">Glowing fish</button>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="lanternfish">Lanternfish</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="barreleyefish">Barreleye fish</button></li>
+                                </ul>
+                            </li>
+                            <li><span class="water-animal-category">Gelatinous drifting animals</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="squid">Cockeyed squid</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="bloodjelly">Bloody-belly comb jellies</button></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <p>The twilight zone has little light as it is 200-1000 meters deep. Since the seas are warming because
                     of greenhouse gas emissions, there have been fewer organisms living in this zone than before.</p>
             </div>
         </section>
 
         <section class="content-section water-zone" data-depth-label="1,000-4,000 m">
-            <div class="water-image" aria-label="Image placeholder for the Midnight Zone">
-                <span>Midnight Zone image</span>
+            <div class="water-image" aria-label="Midnight Zone photos">
+                <div class="water-photos" role="region" aria-label="Midnight Zone photos">
+                    <div class="water-photo-stack">
+                        <button class="water-photo-card" type="button" aria-label="View Anglerfish photo">
+                            <img src="water-photos/angler.jpg" alt="Anglerfish" data-animal="Anglerfish" data-photo="angler">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Gulper Eel photo">
+                            <img src="water-photos/gulper.jpeg" alt="Gulper eel" data-animal="Gulper Eel" data-photo="gulper">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Viperfish photo">
+                            <img src="water-photos/viper.jpeg" alt="Viperfish" data-animal="Viperfish" data-photo="viper">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Vampire Squid photo">
+                            <img src="water-photos/vampire.jpg" alt="Vampire squid" data-animal="Vampire Squid" data-photo="vampire">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Comb Jelly photo">
+                            <img src="water-photos/combjelly.jpg" alt="Comb jelly" data-animal="Comb Jelly" data-photo="combjelly">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Sea Pig photo">
+                            <img src="water-photos/seapig.jpg" alt="Sea pig" data-animal="Sea Pig" data-photo="seapig">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Frilled Shark photo">
+                            <img src="water-photos/frilled.jpg" alt="Frilled shark" data-animal="Frilled Shark" data-photo="frilled">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Greenland Shark photo">
+                            <img src="water-photos/greenland.jpeg" alt="Greenland shark" data-animal="Greenland Shark" data-photo="greenland">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Sperm Whale photo">
+                            <img src="water-photos/spermwhale.jpg" alt="Sperm whale" data-animal="Sperm Whale" data-photo="spermwhale">
+                        </button>
+                    </div>
+                    <div class="water-photo-controls">
+                        <button class="water-photo-arrow water-photo-previous" type="button" aria-label="Show previous photo">
+                            <span aria-hidden="true">←</span>
+                        </button>
+                        <button class="water-photo-arrow water-photo-next" type="button" aria-label="Show next photo">
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="water-copy">
-                <h2>Midnight Zone</h2>
+                <div class="water-zone-heading">
+                    <h2 id="midnight-zone-title">Midnight Zone</h2>
+                    <button class="water-animal-toggle" type="button" aria-label="Show animals inhabiting Midnight Zone" aria-expanded="false" aria-controls="midnight-zone-animals">i</button>
+                    <div class="water-animal-popover" id="midnight-zone-animals" role="region" aria-labelledby="midnight-zone-title" hidden>
+                        <h3>Animals inhabiting Midnight Zone</h3>
+                        <ul>
+                            <li><span class="water-animal-category">Predators</span></li>
+                            <li><span class="water-animal-category">Scavengers</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="angler">Anglerfish</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="gulper">Gulper eel</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="viper">Viperfish</button></li>
+                                </ul>
+                            </li>
+                            <li><span class="water-animal-category">Cephalopods and invertebrates</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="vampire">Vampire squid</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="combjelly">Comb jellies</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="seapig">Sea pigs</button></li>
+                                </ul>
+                            </li>
+                            <li><span class="water-animal-category">Sharks and visitors</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="frilled">Frilled shark</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="greenland">Greenland shark</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="spermwhale">Sperm whale</button></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <p>The midnight zone spans 1000-4000 meters deep, where the flow of food and oxygen levels have been
                     affected by climate change. “Marine snow” refers to organic waste and dead matter that sinks to this
                     zone from upper layers, which is what organisms feed on here.</p>
@@ -73,11 +235,58 @@
         </section>
 
         <section class="content-section water-zone" data-depth-label="3,000-6,000 m">
-            <div class="water-image" aria-label="Image placeholder for the Abyss">
-                <span>Abyss image</span>
+            <div class="water-image" aria-label="Abyss photos">
+                <div class="water-photos" role="region" aria-label="Abyss photos">
+                    <div class="water-photo-stack">
+                        <button class="water-photo-card" type="button" aria-label="View Dumbo Octopus photo">
+                            <img src="water-photos/dumbo.png" alt="Dumbo octopus" data-animal="Dumbo Octopus" data-photo="dumbo">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Giant Isopod photo">
+                            <img src="water-photos/isopod.jpeg" alt="Giant isopod" data-animal="Giant Isopod" data-photo="isopod">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Glass Sponge photo">
+                            <img src="water-photos/glass.jpeg" alt="Glass sponge" data-animal="Glass Sponge" data-photo="glass">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Basket Star photo">
+                            <img src="water-photos/basket.jpg" alt="Basket star" data-animal="Basket Star" data-photo="basket">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Sea Spider photo">
+                            <img src="water-photos/spider.jpg" alt="Sea spider" data-animal="Sea Spider" data-photo="spider">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Tripod Fish photo">
+                            <img src="water-photos/tripod.jpg" alt="Tripod fish" data-animal="Tripod Fish" data-photo="tripod">
+                        </button>
+                    </div>
+                    <div class="water-photo-controls">
+                        <button class="water-photo-arrow water-photo-previous" type="button" aria-label="Show previous photo">
+                            <span aria-hidden="true">←</span>
+                        </button>
+                        <button class="water-photo-arrow water-photo-next" type="button" aria-label="Show next photo">
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="water-copy">
-                <h2>The Abyss</h2>
+                <div class="water-zone-heading">
+                    <h2 id="abyss-zone-title">The Abyss</h2>
+                    <button class="water-animal-toggle" type="button" aria-label="Show animals inhabiting the Abyss" aria-expanded="false" aria-controls="abyss-zone-animals">i</button>
+                    <div class="water-animal-popover" id="abyss-zone-animals" role="region" aria-labelledby="abyss-zone-title" hidden>
+                        <h3>Animals inhabiting the Abyss</h3>
+                        <ul>
+                            <li><span class="water-animal-category">Abyssal pelagic and benthic</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="dumbo">Dumbo octopus</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="isopod">Giant isopod</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="glass">Glass sponge</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="basket">Basket star</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="spider">Sea spider</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="tripod">Tripod fish</button></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <p>The ocean abyss, though around 3000-6000 meters deep, is still affected. The supply of food and
                     changes to currents and temperature have been altered by climate change. This layer also relies on
                     marine snow for energy. De-oxygenation is shifting ecosystems negatively as well.</p>
@@ -85,11 +294,54 @@
         </section>
 
         <section class="content-section water-zone" data-depth-label="6,000+ m">
-            <div class="water-image" aria-label="Image placeholder for the Trenches">
-                <span>Trenches image</span>
+            <div class="water-image" aria-label="Trenches photos">
+                <div class="water-photos" role="region" aria-label="Trenches photos">
+                    <div class="water-photo-stack">
+                        <button class="water-photo-card" type="button" aria-label="View Snailfish photo">
+                            <img src="water-photos/snailfish.jpeg" alt="Snailfish" data-animal="Snailfish" data-photo="snailfish">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Amphipod photo">
+                            <img src="water-photos/amphipod.jpeg" alt="Amphipod" data-animal="Amphipod" data-photo="amphipod">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Isopod photo">
+                            <img src="water-photos/isopod2.jpg" alt="Trench isopod" data-animal="Isopod" data-photo="isopod2">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Cusk-eel photo">
+                            <img src="water-photos/cuskeel.jpg" alt="Cusk-eel" data-animal="Cusk-eel" data-photo="cuskeel">
+                        </button>
+                        <button class="water-photo-card" type="button" aria-label="View Sea Cucumber photo">
+                            <img src="water-photos/cucumber.jpg" alt="Sea cucumber" data-animal="Sea Cucumber" data-photo="cucumber">
+                        </button>
+                    </div>
+                    <div class="water-photo-controls">
+                        <button class="water-photo-arrow water-photo-previous" type="button" aria-label="Show previous photo">
+                            <span aria-hidden="true">←</span>
+                        </button>
+                        <button class="water-photo-arrow water-photo-next" type="button" aria-label="Show next photo">
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="water-copy">
-                <h2>Trenches</h2>
+                <div class="water-zone-heading">
+                    <h2 id="trenches-zone-title">Trenches</h2>
+                    <button class="water-animal-toggle" type="button" aria-label="Show animals inhabiting Trenches" aria-expanded="false" aria-controls="trenches-zone-animals">i</button>
+                    <div class="water-animal-popover" id="trenches-zone-animals" role="region" aria-labelledby="trenches-zone-title" hidden>
+                        <h3>Animals inhabiting Trenches</h3>
+                        <ul>
+                            <li><span class="water-animal-category">Specialised and resilient creatures</span>
+                                <ul>
+                                    <li><button class="water-animal-name" type="button" data-photo="snailfish">Snailfish</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="amphipod">Amphipods</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="isopod2">Isopods</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="cuskeel">Cusk-eels</button></li>
+                                    <li><button class="water-animal-name" type="button" data-photo="cucumber">Sea cucumbers</button></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <p>The ocean trenches, the deepest layer of the ocean, are similar to the abyss. The chemistry of the
                     acidity has been shifting, which affects the trench organisms. Since it is the lowest layer, it is
                     isolated and facing disruptions from habitat disconnection.</p>
