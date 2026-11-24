@@ -15,69 +15,92 @@ document.querySelectorAll(".water-photos img").forEach((image) => {
     image.style.setProperty("--rough-edge-mask", roughEdgeMask(Math.floor(Math.random() * 1_000_000)));
 });
 
-// Wrap text into visual lines, then reveal each line as it scrolls into view.
-document.querySelectorAll(".content-section h1, .content-section h2, .content-section p")
-    .forEach((element) => {
-        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-        const textNodes = [];
+// Wrap headings, paragraphs, and depth-meter labels into animated characters.
+function setRandomCharacterWiggle(char) {
+    const displacement = (Math.random() * 3 - 1.5).toFixed(2);
+    const rotation = (Math.random() * 1.6 - 0.8).toFixed(2);
+    char.style.setProperty("--wiggle-y", `${displacement}px`);
+    char.style.setProperty("--wiggle-rotate", `${rotation}deg`);
+}
 
-        while (walker.nextNode()) textNodes.push(walker.currentNode);
+function wrapTextCharacters(element) {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    const shouldWiggle = !reducedMotion && element.matches(
+        ".content-section h1, .content-section h2, .water-depth-zone, .water-depth-ruler button"
+    );
 
-        textNodes.forEach((textNode) => {
-            const fragment = document.createDocumentFragment();
-            const parts = textNode.nodeValue.split(/(\s+)/);
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
 
-            parts.forEach((part) => {
-                if (!part || /^\s+$/.test(part)) {
-                    fragment.appendChild(document.createTextNode(part));
-                    return;
-                }
+    textNodes.forEach((textNode) => {
+        const fragment = document.createDocumentFragment();
+        const parts = textNode.nodeValue.split(/(\s+)/);
 
-                const word = document.createElement("span");
-                word.className = "water-word";
+        parts.forEach((part) => {
+            if (!part || /^\s+$/.test(part)) {
+                fragment.appendChild(document.createTextNode(part));
+                return;
+            }
 
-                [...part].forEach((character, index) => {
-                    const char = document.createElement("span");
-                    char.className = "water-char";
-                    char.style.setProperty("--char-delay", `${index * 25}ms`);
-                    char.textContent = character;
-                    word.appendChild(char);
-                });
+            const word = document.createElement("span");
+            word.className = "water-word";
 
-                fragment.appendChild(word);
+            [...part].forEach((character, index) => {
+                const char = document.createElement("span");
+                char.className = "water-char";
+                char.style.setProperty("--char-delay", `${index * 25}ms`);
+                char.textContent = character;
+                if (shouldWiggle) setRandomCharacterWiggle(char);
+                word.appendChild(char);
             });
 
-            textNode.parentNode.replaceChild(fragment, textNode);
+            fragment.appendChild(word);
         });
-    });
 
-const textChars = [...document.querySelectorAll(".content-section h1 .water-char, .content-section h2 .water-char")];
+        textNode.parentNode.replaceChild(fragment, textNode);
+    });
+}
+
+document.querySelectorAll(
+    ".content-section h1, .content-section h2, .content-section p, .water-depth-zone, .water-depth-ruler button"
+).forEach(wrapTextCharacters);
+
+const textCharSelector = [
+    ".content-section h1 .water-char",
+    ".content-section h2 .water-char",
+    ".water-depth-meter .water-char"
+].join(", ");
+let textChars = [...document.querySelectorAll(textCharSelector)];
 
 if (!reducedMotion) {
     const nextWiggleAt = new WeakMap();
     const now = performance.now();
-    textChars.forEach((char) => {
+    textChars.filter((char) => !char.closest(".water-depth-meter")).forEach((char) => {
         nextWiggleAt.set(char, now + Math.random() * 1400);
     });
 
     function updateTextWiggle() {
         const now = performance.now();
         textChars.forEach((char) => {
+            if (char.closest(".water-depth-meter")) return;
             if (nextWiggleAt.get(char) > now) return;
 
             nextWiggleAt.set(char, now + 500 + Math.random() * 700);
             if (!char.closest(".is-visible")) return;
 
-            const displacement = (Math.random() * 3 - 1.5).toFixed(2);
-            const rotation = (Math.random() * 1.6 - 0.8).toFixed(2);
-            char.style.setProperty("--wiggle-y", `${displacement}px`);
-            char.style.setProperty("--wiggle-rotate", `${rotation}deg`);
+            setRandomCharacterWiggle(char);
         });
 
         window.setTimeout(updateTextWiggle, document.hidden ? 500 : 120);
     }
 
+    function updateDepthMeterWiggle() {
+        document.querySelectorAll(".water-depth-meter .water-char").forEach(setRandomCharacterWiggle);
+        window.setTimeout(updateDepthMeterWiggle, 1000);
+    }
+
     updateTextWiggle();
+    updateDepthMeterWiggle();
 }
 
 const revealObserver = new IntersectionObserver((entries) => {
@@ -105,6 +128,7 @@ document.querySelectorAll(".water-photos img").forEach((image) => {
 const depthZones = [...document.querySelectorAll(".water-zone")];
 const depthMeter = document.querySelector(".water-depth-meter");
 const depthZoneLabel = depthMeter?.querySelector(".water-depth-zone");
+depthMeter?.classList.add("is-visible");
 const depthTicks = [...(depthMeter?.querySelectorAll(".water-depth-ruler li") || [])];
 const colorStops = [
     { at: 0, rgb: [98, 198, 223] },
@@ -136,11 +160,30 @@ function updateOceanDepth() {
     });
 
     if (activeIndex < 0 && depthZones.length) {
-        activeIndex = window.scrollY < depthZones[0].offsetTop ? -1 : depthZones.length - 1;
+        if (window.scrollY < depthZones[0].offsetTop) {
+            activeIndex = -1;
+        } else {
+            let nearestDistance = Infinity;
+            depthZones.forEach((zone, index) => {
+                const bounds = zone.getBoundingClientRect();
+                const distance = marker < bounds.top
+                    ? bounds.top - marker
+                    : marker - bounds.bottom;
+                if (distance < nearestDistance) {
+                    nearestDistance = distance;
+                    activeIndex = index;
+                }
+            });
+        }
     }
 
     const activeZone = depthZones[activeIndex];
-    depthZoneLabel.textContent = activeZone?.querySelector("h2")?.textContent.trim() || "Surface";
+    const zoneLabel = activeZone?.querySelector("h2")?.textContent.trim() || "Surface";
+    if (depthZoneLabel.textContent.trim() !== zoneLabel) {
+        depthZoneLabel.textContent = zoneLabel;
+        wrapTextCharacters(depthZoneLabel);
+        textChars = [...document.querySelectorAll(textCharSelector)];
+    }
     depthTicks.forEach((tick, index) => {
         if (index === Math.max(0, activeIndex)) {
             tick.setAttribute("aria-current", "location");
