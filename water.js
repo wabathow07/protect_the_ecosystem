@@ -193,9 +193,13 @@ if (shark && sharkImage && title) {
 
     function hidePointerCursor() {
         document.body.classList.add("water-cursor-hidden");
+        if (!reducedMotion) shark.classList.add("is-cursor-hidden");
         clearTimeout(cursorHideTimer);
         cursorHideTimer = setTimeout(() => {
             document.body.classList.remove("water-cursor-hidden");
+            shark.classList.remove("is-cursor-hidden");
+            cursorHiddenDuringHover = false;
+            schedulePointerCursorHide();
         }, 3000);
     }
 
@@ -419,6 +423,23 @@ document.addEventListener("pointermove", (event) => {
 
     document.body.appendChild(bubble);
     bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
+});
+
+document.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary || event.button !== 0 || event.target.closest?.(".water-shark")) return;
+
+    for (let index = 0; index < 5; index += 1) {
+        const bubble = document.createElement("span");
+        bubble.className = "cursor-bubble";
+        bubble.style.left = `${event.clientX + (Math.random() * 56 - 28)}px`;
+        bubble.style.top = `${event.clientY + (Math.random() * 36 - 18)}px`;
+        bubble.style.setProperty("--bubble-size", `${10 + Math.random() * 18}px`);
+        bubble.style.setProperty("--bubble-drift", `${Math.random() * 36 - 18}px`);
+        bubble.style.setProperty("--bubble-duration", `${1500 + Math.random() * 1000}ms`);
+
+        document.body.appendChild(bubble);
+        bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
+    }
 });
 
 // Give each zone with photos its own swipeable, selectable instant stack.
