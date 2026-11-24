@@ -1,3 +1,9 @@
+html {
+    background-color: #1a1a1a;
+    overflow-x: clip;
+    overscroll-behavior-y: none;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
@@ -181,6 +187,7 @@ a {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 48px;
     color: white;
+    filter: blur(0.01em);
     text-decoration: none;
 
     display: flex;
@@ -238,6 +245,7 @@ a {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 48px;
     color: white;
+    filter: blur(0.01em);
     text-decoration: none;
 
     display: flex;
