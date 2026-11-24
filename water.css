@@ -1,5 +1,6 @@
 html {
     background-color: #1a1a1a;
+    overflow-x: clip;
 }
 
 body.water {
@@ -13,9 +14,65 @@ body.water {
     transition: background-color 180ms linear;
 }
 
+body.water::after {
+    position: absolute;
+    inset: 0;
+    z-index: 10002;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='discrete' tableValues='0 1'/%3E%3CfeFuncG type='discrete' tableValues='0 1'/%3E%3CfeFuncB type='discrete' tableValues='0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    content: "";
+    mix-blend-mode: overlay;
+    opacity: 0.16;
+    pointer-events: none;
+}
+
+body.water::before {
+    position: absolute;
+    inset: 0;
+    z-index: 10003;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='discrete' tableValues='0 1'/%3E%3CfeFuncG type='discrete' tableValues='0 1'/%3E%3CfeFuncB type='discrete' tableValues='0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    content: "";
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@supports (animation-timeline: scroll(root block)) {
+    body.water::after {
+        animation: water-dark-grain-fade 1s linear both;
+        animation-timeline: scroll(root block);
+    }
+
+    body.water::before {
+        animation: water-white-grain-rise 1s linear both;
+        animation-timeline: scroll(root block);
+    }
+}
+
+@keyframes water-dark-grain-fade {
+    from {
+        opacity: 0.16;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes water-white-grain-rise {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.3;
+    }
+}
+
 body.water main {
     box-sizing: border-box;
-    padding-right: clamp(3.5rem, 6vw, 5rem);
+    padding-right: clamp(5.25rem, 6vw, 5.5rem);
 }
 
 body.water h1,
@@ -23,6 +80,10 @@ body.water h2,
 body.water p,
 body.water .navbar a {
     color: #b7edff;
+}
+
+body.water p {
+    filter: blur(0.02em);
 }
 
 body.water .navbar a:hover {
@@ -41,21 +102,17 @@ body.water .water-depth-meter {
     display: grid;
     justify-items: end;
     gap: 0.2rem;
-    width: 58px;
+    width: 72px;
     transform: translateY(-50%);
     color: #b7edff;
     font: 0.7rem/1.2 Helvetica, Arial, sans-serif;
     text-align: right;
-    text-shadow: 0 1px 5px #00131d;
+    filter: blur(0.02em);
 }
 
 body.water .water-depth-zone {
     max-width: 100%;
     font-weight: 700;
-}
-
-body.water .water-depth-reading {
-    font-variant-numeric: tabular-nums;
 }
 
 body.water .water-depth-ruler {
@@ -157,6 +214,25 @@ body.water .water-title {
 body.water .water-title h1,
 body.water .water-copy h2 {
     font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    filter: blur(0.01em);
+}
+
+body.water .water-photo-arrow,
+body.water .water-animal-toggle,
+.water-lightbox-arrow {
+    filter: blur(0.025em);
+}
+
+.water-lightbox-close {
+    filter: blur(0.015em);
+}
+
+body.water .water-animal-popover {
+    filter: blur(0.02em);
+}
+
+body.water .water-lightbox-caption {
+    filter: blur(0.015em);
 }
 
 body.water .water-title h1 {
@@ -178,6 +254,20 @@ body.water .water-shark {
         top var(--travel-time, 4s) ease-in-out;
 }
 
+body.water .water-shark.is-positioning {
+    transition: none;
+}
+
+body.water .water-shark.is-following {
+    transition: none;
+}
+
+body.water .water-shark.is-checking img {
+    animation: none;
+    transform: scaleX(calc(var(--travel-direction, 1) * var(--bite-flip, 1)));
+    transition: transform 120ms ease-in-out;
+}
+
 body.water .water-shark:focus-visible {
     outline: 2px solid white;
     outline-offset: 4px;
@@ -188,7 +278,7 @@ body.water .water-shark img {
     width: 100%;
     height: auto;
     pointer-events: none;
-    filter: drop-shadow(0 8px 8px rgb(0 15 28 / 45%));
+    filter: drop-shadow(0 6px 6px rgb(0 15 28 / 25%));
     animation: shark-wiggle 700ms ease-in-out infinite;
 }
 
@@ -206,6 +296,11 @@ body.water .water-shark img {
 
 body.water .water-shark.is-biting img {
     --bite-flip: -1;
+}
+
+body.water.water-cursor-hidden,
+body.water.water-cursor-hidden * {
+    cursor: none !important;
 }
 
 body.water .water-zone {
@@ -328,31 +423,48 @@ body.water .water-animal-popover[hidden] {
 
 body.water .water-animal-popover {
     position: absolute;
-    top: calc(100% + .45rem);
-    left: 0;
-    z-index: 20;
+    z-index: 10005;
     box-sizing: border-box;
-    width: min(100%, 480px);
+    width: fit-content;
+    min-width: min(280px, calc(100vw - 24px));
+    max-width: min(480px, calc(100vw - 24px));
     max-height: min(60vh, 480px);
     overflow-y: auto;
     padding: 1rem 1.2rem;
     border: 1px solid rgb(183 237 255 / 55%);
-    border-radius: 12px;
+    border-radius: 0;
     background: rgb(var(--water-depth-color, 98 198 223) / 96%);
     color: #e4faff;
     box-shadow: 0 12px 32px rgb(0 10 20 / 45%);
     text-align: left;
     text-shadow: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: .95rem;
     line-height: 1.45;
+    isolation: isolate;
+}
+
+body.water .water-animal-popover::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.58'/%3E%3C/svg%3E");
+    background-size: 90px 90px;
+    content: "";
+    mix-blend-mode: soft-light;
+    opacity: .55;
+    pointer-events: none;
 }
 
 body.water .water-animal-popover h3 {
     margin: 0 0 .6rem;
     color: #e4faff;
-    font: 700 1rem/1.3 Helvetica, Arial, sans-serif;
+    font: 700 1rem/1.3 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-decoration: underline;
     text-underline-offset: .15em;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
 }
 
 body.water .water-animal-popover ul {
@@ -387,17 +499,13 @@ body.water .water-animal-name:hover {
     color: #1c7793;
 }
 
-body.water .water-zone:nth-of-type(even) .water-animal-popover {
-    right: 0;
-    left: auto;
-}
-
 body.water .water-copy p {
     font-size: clamp(1.3rem, 1.05rem + 0.5vw, 1.7rem);
     line-height: 1.7;
 }
 
 .water-word {
+    display: inline-block;
     white-space: nowrap;
 }
 
@@ -405,8 +513,13 @@ body.water .water-copy p {
     display: inline-block;
     opacity: 0;
     transform: translateY(0.5em);
-    transition: opacity 800ms ease, transform 800ms ease;
-    transition-delay: var(--char-delay, 0ms);
+    translate: 0 var(--wiggle-y, 0px);
+    rotate: var(--wiggle-rotate, 0deg);
+    transition:
+        opacity 800ms ease var(--char-delay, 0ms),
+        transform 800ms ease var(--char-delay, 0ms),
+        translate 100ms steps(10, end),
+        rotate 100ms steps(10, end);
 }
 
 .is-visible .water-char {
@@ -435,12 +548,11 @@ body.water .water-photo-card {
     display: block;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    padding: 4px;
+    overflow: visible;
+    padding: 0;
     border: 0;
-    border-radius: 22px;
-    background: #f7fbfc;
-    box-shadow: 0 16px 35px rgb(0 13 24 / 35%);
+    border-radius: 0;
+    background: transparent;
     cursor: zoom-in;
     opacity: 0;
     pointer-events: none;
@@ -480,7 +592,14 @@ body.water .water-photos img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 14px;
+    filter: drop-shadow(0 12px 14px rgb(0 10 20 / 55%)) drop-shadow(0 3px 5px rgb(0 10 20 / 35%));
+    -webkit-mask-image: var(--rough-edge-mask, url("water-photos/rough-edge-mask.svg"));
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: var(--rough-edge-mask, url("water-photos/rough-edge-mask.svg"));
+    mask-mode: alpha;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
     opacity: 0;
     transform: translateY(12px) scale(.98);
     transition: opacity 800ms ease, transform 800ms ease;
@@ -504,21 +623,21 @@ body.water .water-photo-controls {
 
 body.water .water-photo-arrow {
     display: grid;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     place-items: center;
-    border: 1px solid rgb(228 250 255 / 70%);
-    border-radius: 50%;
-    background: rgb(0 29 47 / 60%);
-    color: #e4faff;
-    box-shadow: 0 5px 16px rgb(0 13 24 / 25%);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #b7edff;
+    box-shadow: none;
     cursor: pointer;
     opacity: 0;
     transform: translateY(12px);
     transition:
         opacity 800ms ease,
         transform 800ms ease,
-        background-color 200ms ease;
+        color 200ms ease;
 }
 
 body.water .water-photo-arrow.is-visible {
@@ -527,7 +646,7 @@ body.water .water-photo-arrow.is-visible {
 }
 
 body.water .water-photo-arrow:hover {
-    background: #1c7793;
+    color: #b7edff;
 }
 
 body.water .water-photo-previous:hover {
@@ -539,7 +658,8 @@ body.water .water-photo-next:hover {
 }
 
 body.water .water-photo-arrow span {
-    font: 1rem/1 Helvetica, Arial, sans-serif;
+    font: 900 1.8rem/1 Helvetica, Arial, sans-serif;
+    -webkit-text-stroke: 0.4px currentColor;
 }
 
 .cursor-bubble {
@@ -595,12 +715,46 @@ body.water .water-photo-arrow span {
     margin: 0 auto;
     object-fit: contain;
     border-radius: 12px;
+    touch-action: pan-y;
+}
+
+.water-lightbox-caption-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
 .water-lightbox-caption {
-    margin: 1rem 0 0;
+    margin: 0;
     color: white;
-    font: 2rem Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font: clamp(1.25rem, 4vw, 2rem) Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+.water-lightbox-arrow {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #b7edff;
+    box-shadow: none;
+    font: 900 1.8rem/1 Helvetica, Arial, sans-serif;
+    -webkit-text-stroke: 0.4px currentColor;
+    cursor: pointer;
+    transition: color 180ms ease;
+}
+
+.water-lightbox-arrow:hover {
+    color: #b7edff;
+}
+
+.water-lightbox-arrow:focus-visible {
+    outline: 2px solid #e4faff;
+    outline-offset: 3px;
 }
 
 .water-lightbox-close {
@@ -624,13 +778,32 @@ body.water-lightbox-open {
 }
 
 @media (max-width: 700px) {
+    body.water .navbar {
+        flex-direction: column;
+    }
+
+    body.water .navbar .brand {
+        font-size: clamp(1.35rem, 5vw, 2rem);
+    }
+
+    body.water .navbar ul {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    body.water .navbar ul li a {
+        padding: 0.4em 0.65em;
+        font-size: clamp(0.85rem, 3.8vw, 1.1rem);
+    }
+
     body.water main {
-        padding-right: 3.25rem;
+        padding-right: 4.5rem;
     }
 
     body.water .water-depth-meter {
         right: 6px;
-        width: 42px;
+        width: 64px;
         font-size: 0.62rem;
     }
 
@@ -661,11 +834,6 @@ body.water-lightbox-open {
         justify-content: flex-start;
     }
 
-    body.water .water-zone:nth-of-type(n) .water-animal-popover {
-        right: auto;
-        left: 0;
-    }
-
     body.water .water-image {
         min-height: 220px;
     }
@@ -685,11 +853,13 @@ body.water-lightbox-open {
     }
 
     .water-char,
+    .water-word,
     body.water .water-photos img,
     body.water .water-animal-toggle,
     body.water .water-photo-arrow {
         opacity: 1;
         transform: none;
+        translate: none;
         transition: none;
     }
 
