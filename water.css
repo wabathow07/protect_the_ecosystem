@@ -298,6 +298,29 @@ body.water .water-shark.is-biting img {
     --bite-flip: -1;
 }
 
+body.water .water-shark.is-cursor-hidden img {
+    animation: shark-wiggle 700ms ease-in-out infinite, shark-cursor-hidden-shake 450ms ease-in-out 1;
+}
+
+@keyframes shark-cursor-hidden-shake {
+
+    0% {
+        rotate: 0deg;
+    }
+
+    25% {
+        rotate: -9deg;
+    }
+
+    75% {
+        rotate: 9deg;
+    }
+
+    100% {
+        rotate: 0deg;
+    }
+}
+
 body.water.water-cursor-hidden,
 body.water.water-cursor-hidden * {
     cursor: none !important;
@@ -645,10 +668,6 @@ body.water .water-photo-arrow.is-visible {
     transform: translateY(0);
 }
 
-body.water .water-photo-arrow:hover {
-    color: #b7edff;
-}
-
 body.water .water-photo-previous:hover {
     transform: translateX(-2px);
 }
@@ -746,10 +765,6 @@ body.water .water-photo-arrow span {
     -webkit-text-stroke: 0.4px currentColor;
     cursor: pointer;
     transition: color 180ms ease;
-}
-
-.water-lightbox-arrow:hover {
-    color: #b7edff;
 }
 
 .water-lightbox-arrow:focus-visible {
