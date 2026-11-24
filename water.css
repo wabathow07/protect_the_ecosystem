@@ -218,9 +218,12 @@ body.water .water-copy h2 {
 }
 
 body.water .water-photo-arrow,
-body.water .water-animal-toggle,
-.water-lightbox-arrow {
+body.water .water-animal-toggle {
     filter: blur(0.025em);
+}
+
+.water-lightbox-arrow {
+    filter: blur(0.02em);
 }
 
 .water-lightbox-close {
@@ -331,7 +334,7 @@ body.water .water-zone {
     grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: clamp(1.5rem, 4vw, 4rem);
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
 }
 
@@ -552,13 +555,18 @@ body.water .water-copy p {
 
 body.water .water-photos {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: 2.5rem minmax(0, 520px) 2.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
     width: 100%;
 }
 
 body.water .water-photo-stack {
     position: relative;
-    width: min(100%, 480px);
+    grid-column: 2;
+    grid-row: 1;
+    width: min(100%, 520px);
     aspect-ratio: 4 / 3;
     margin: 0 auto;
     touch-action: pan-y;
@@ -634,14 +642,17 @@ body.water .water-photos img.is-visible {
 }
 
 body.water .water-photo-controls {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    width: min(100%, 480px);
-    align-items: center;
-    justify-content: center;
-    gap: .75rem;
-    margin: 0 auto;
+    display: contents;
+}
+
+body.water .water-photo-previous {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+body.water .water-photo-next {
+    grid-column: 3;
+    grid-row: 1;
 }
 
 body.water .water-photo-arrow {
@@ -677,8 +688,8 @@ body.water .water-photo-next:hover {
 }
 
 body.water .water-photo-arrow span {
-    font: 900 1.8rem/1 Helvetica, Arial, sans-serif;
-    -webkit-text-stroke: 0.4px currentColor;
+    font: 400 1.8rem/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-text-stroke: 0;
 }
 
 .cursor-bubble {
@@ -761,9 +772,10 @@ body.water .water-photo-arrow span {
     background: transparent;
     color: #b7edff;
     box-shadow: none;
-    font: 900 1.8rem/1 Helvetica, Arial, sans-serif;
-    -webkit-text-stroke: 0.4px currentColor;
+    font: 400 1.8rem/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-text-stroke: 0;
     cursor: pointer;
+    transform: translateY(-2px);
     transition: color 180ms ease;
 }
 
@@ -851,6 +863,10 @@ body.water-lightbox-open {
 
     body.water .water-image {
         min-height: 220px;
+    }
+
+    body.water .water-photos {
+        gap: .25rem;
     }
 }
 
