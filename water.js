@@ -764,9 +764,9 @@ lightbox.innerHTML = `
         <button class="water-lightbox-close" type="button" aria-label="Close photo">×</button>
         <img class="water-lightbox-image" alt="" draggable="false">
         <div class="water-lightbox-caption-row">
-            <button class="water-lightbox-arrow water-lightbox-previous" type="button" aria-label="Previous photo">←</button>
+            <button class="water-lightbox-arrow water-lightbox-previous" type="button" aria-label="Previous photo">&lt;</button>
             <p class="water-lightbox-caption"></p>
-            <button class="water-lightbox-arrow water-lightbox-next" type="button" aria-label="Next photo">→</button>
+            <button class="water-lightbox-arrow water-lightbox-next" type="button" aria-label="Next photo">&gt;</button>
         </div>
     </div>
 `;
