@@ -1,4 +1,19 @@
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const roughEdgeMask = (seed) => {
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <filter id="roughen" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="3" seed="${seed}" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+            <rect x="4" y="4" width="92" height="92" fill="white" filter="url(#roughen)" />
+        </svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+};
+
+document.querySelectorAll(".water-photos img").forEach((image) => {
+    image.style.setProperty("--rough-edge-mask", roughEdgeMask(Math.floor(Math.random() * 1_000_000)));
+});
 
 // Wrap text into visual lines, then reveal each line as it scrolls into view.
 document.querySelectorAll(".content-section h1, .content-section h2, .content-section p")
@@ -36,6 +51,35 @@ document.querySelectorAll(".content-section h1, .content-section h2, .content-se
         });
     });
 
+const textChars = [...document.querySelectorAll(".content-section h1 .water-char, .content-section h2 .water-char")];
+
+if (!reducedMotion) {
+    const nextWiggleAt = new WeakMap();
+    const now = performance.now();
+    textChars.forEach((char) => {
+        nextWiggleAt.set(char, now + Math.random() * 1400);
+    });
+
+    function updateTextWiggle() {
+        const now = performance.now();
+        textChars.forEach((char) => {
+            if (nextWiggleAt.get(char) > now) return;
+
+            nextWiggleAt.set(char, now + 500 + Math.random() * 700);
+            if (!char.closest(".is-visible")) return;
+
+            const displacement = (Math.random() * 3 - 1.5).toFixed(2);
+            const rotation = (Math.random() * 1.6 - 0.8).toFixed(2);
+            char.style.setProperty("--wiggle-y", `${displacement}px`);
+            char.style.setProperty("--wiggle-rotate", `${rotation}deg`);
+        });
+
+        window.setTimeout(updateTextWiggle, document.hidden ? 500 : 120);
+    }
+
+    updateTextWiggle();
+}
+
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         entry.target.classList.toggle("is-visible", entry.isIntersecting);
@@ -43,13 +87,24 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll(
-    ".content-section h1, .content-section h2, .content-section p, .water-photos img, .water-animal-toggle, .water-photo-arrow"
+    ".content-section h1, .content-section h2, .content-section p, .water-animal-toggle, .water-photo-arrow"
 ).forEach((element) => revealObserver.observe(element));
+
+const photoRevealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+    });
+}, { threshold: 0.1, rootMargin: "0px 0px 80px 0px" });
+
+document.querySelectorAll(".water-photos img").forEach((image) => {
+    photoRevealObserver.observe(image);
+});
 
 const depthZones = [...document.querySelectorAll(".water-zone")];
 const depthMeter = document.querySelector(".water-depth-meter");
 const depthZoneLabel = depthMeter?.querySelector(".water-depth-zone");
-const depthReading = depthMeter?.querySelector(".water-depth-reading");
 const depthTicks = [...(depthMeter?.querySelectorAll(".water-depth-ruler li") || [])];
 const colorStops = [
     { at: 0, rgb: [98, 198, 223] },
@@ -86,7 +141,6 @@ function updateOceanDepth() {
 
     const activeZone = depthZones[activeIndex];
     depthZoneLabel.textContent = activeZone?.querySelector("h2")?.textContent.trim() || "Surface";
-    depthReading.textContent = activeZone?.dataset.depthLabel || "0 m";
     depthTicks.forEach((tick, index) => {
         if (index === Math.max(0, activeIndex)) {
             tick.setAttribute("aria-current", "location");
@@ -122,19 +176,71 @@ const title = document.querySelector(".water-title");
 if (shark && sharkImage && title) {
     const originalSrc = sharkImage.getAttribute("src");
     let biteTimer;
+    let cursorHideTimer;
+    let mouthHoverTimer;
+    let isFollowingPointer = false;
+    let isCheckingForPointer = false;
+    let isPointerOverShark = false;
+    let cursorHiddenDuringHover = false;
 
-    function showBite() {
+    const initialMaxX = Math.max(0, title.clientWidth - shark.offsetWidth);
+    const initialMaxY = Math.max(0, title.clientHeight - shark.offsetHeight);
+    shark.classList.add("is-positioning");
+    shark.style.left = `${Math.random() * initialMaxX}px`;
+    shark.style.top = `${Math.random() * initialMaxY}px`;
+    shark.getBoundingClientRect();
+    shark.classList.remove("is-positioning");
+
+    function hidePointerCursor() {
+        document.body.classList.add("water-cursor-hidden");
+        clearTimeout(cursorHideTimer);
+        cursorHideTimer = setTimeout(() => {
+            document.body.classList.remove("water-cursor-hidden");
+        }, 3000);
+    }
+
+    function schedulePointerCursorHide() {
+        if (!isPointerOverShark || cursorHiddenDuringHover || mouthHoverTimer ||
+            sharkImage.getAttribute("src") !== "water-photos/sharkmouth.png") return;
+
+        mouthHoverTimer = setTimeout(() => {
+            mouthHoverTimer = null;
+            if (!isPointerOverShark || sharkImage.getAttribute("src") !== "water-photos/sharkmouth.png") return;
+            cursorHiddenDuringHover = true;
+            hidePointerCursor();
+        }, 1000);
+    }
+
+    function showBite(duration = isFollowingPointer ? 5000 : 2000) {
         clearTimeout(biteTimer);
         sharkImage.src = "water-photos/sharkmouth.png";
         shark.classList.add("is-biting");
+        schedulePointerCursorHide();
 
         biteTimer = setTimeout(() => {
             sharkImage.src = originalSrc;
             shark.classList.remove("is-biting");
-        }, 2000);
+        }, duration);
     }
 
-    shark.addEventListener("click", showBite);
+    shark.addEventListener("pointerenter", (event) => {
+        if (event.pointerType !== "mouse") return;
+        isPointerOverShark = true;
+        cursorHiddenDuringHover = false;
+        schedulePointerCursorHide();
+    });
+    shark.addEventListener("pointerleave", (event) => {
+        if (event.pointerType === "mouse") {
+            isPointerOverShark = false;
+            cursorHiddenDuringHover = false;
+            clearTimeout(mouthHoverTimer);
+            mouthHoverTimer = null;
+        }
+    });
+    shark.addEventListener("pointerdown", (event) => {
+        if (event.button === 0 && event.isPrimary) showBite();
+    });
+    shark.addEventListener("click", () => showBite());
     shark.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -143,7 +249,134 @@ if (shark && sharkImage && title) {
     });
 
     if (!reducedMotion) {
+        let roamTimer;
+        let hoverTimer;
+        let followTimer;
+        let checkingTimer;
+        let flipTimers = [];
+        let lastPointerPosition = null;
+        let lastFollowFrameTime = null;
+        let followFrame = 0;
+
+        function followPointerFrame(timestamp) {
+            if (!isFollowingPointer || !lastPointerPosition) return;
+
+            const bounds = title.getBoundingClientRect();
+            const maxX = Math.max(0, title.clientWidth - shark.offsetWidth);
+            const maxY = Math.max(0, title.clientHeight - shark.offsetHeight);
+            const targetLeft = Math.min(maxX, Math.max(0, lastPointerPosition.x - bounds.left - shark.offsetWidth / 2));
+            const targetTop = Math.min(maxY, Math.max(0, lastPointerPosition.y - bounds.top - shark.offsetHeight / 2));
+            const currentLeft = parseFloat(shark.style.left) || 0;
+            const currentTop = parseFloat(shark.style.top) || 0;
+            const deltaX = targetLeft - currentLeft;
+            const deltaY = targetTop - currentTop;
+            const distance = Math.hypot(deltaX, deltaY);
+
+            if (!isCheckingForPointer && distance > 0.5 && lastFollowFrameTime !== null) {
+                const travelTime = parseFloat(shark.style.getPropertyValue("--travel-time")) || 4.5;
+                const speed = Math.max(title.clientWidth, title.clientHeight) / travelTime;
+                const elapsed = Math.min((timestamp - lastFollowFrameTime) / 1000, 0.05);
+                const step = Math.min(distance, speed * elapsed);
+                shark.style.left = `${currentLeft + deltaX / distance * step}px`;
+                shark.style.top = `${currentTop + deltaY / distance * step}px`;
+            }
+
+            lastFollowFrameTime = timestamp;
+            followFrame = requestAnimationFrame(followPointerFrame);
+        }
+
+        function handlePointerMove(event) {
+            if (event.pointerType !== "mouse" || (!hoverTimer && !isFollowingPointer)) return;
+            const previousPosition = lastPointerPosition;
+            lastPointerPosition = { x: event.clientX, y: event.clientY };
+            if (isFollowingPointer && !isCheckingForPointer && Math.abs(lastPointerPosition.x - previousPosition.x) > 1) {
+                shark.style.setProperty("--travel-direction", lastPointerPosition.x > previousPosition.x ? "1" : "-1");
+            }
+        }
+
+        function checkForPointer() {
+            if (!isFollowingPointer || document.body.classList.contains("water-cursor-hidden")) return;
+            isCheckingForPointer = true;
+            shark.classList.add("is-checking");
+
+            const normalDirection = shark.style.getPropertyValue("--travel-direction") || "1";
+            const flippedDirection = normalDirection === "1" ? "-1" : "1";
+            [flippedDirection, normalDirection, flippedDirection, normalDirection].forEach((direction, index) => {
+                flipTimers.push(setTimeout(() => {
+                    if (document.body.classList.contains("water-cursor-hidden")) {
+                        flipTimers.forEach(clearTimeout);
+                        flipTimers = [];
+                        isCheckingForPointer = false;
+                        shark.classList.remove("is-checking");
+                        shark.style.setProperty("--travel-direction", normalDirection);
+                        return;
+                    }
+                    shark.style.setProperty("--travel-direction", direction);
+                }, index * 500));
+            });
+        }
+
+        function stopFollowingPointer() {
+            clearTimeout(followTimer);
+            clearTimeout(checkingTimer);
+            flipTimers.forEach(clearTimeout);
+            flipTimers = [];
+            cancelAnimationFrame(followFrame);
+            followFrame = 0;
+            lastFollowFrameTime = null;
+            isFollowingPointer = false;
+            isCheckingForPointer = false;
+            shark.classList.remove("is-following", "is-checking");
+            document.removeEventListener("pointermove", handlePointerMove);
+            lastPointerPosition = null;
+            clearTimeout(biteTimer);
+            sharkImage.src = originalSrc;
+            shark.classList.remove("is-biting");
+            moveShark();
+        }
+
+        function startFollowingPointer() {
+            if (isFollowingPointer) return;
+            clearTimeout(hoverTimer);
+            hoverTimer = null;
+            clearTimeout(roamTimer);
+            const currentPosition = getComputedStyle(shark);
+            shark.style.left = currentPosition.left;
+            shark.style.top = currentPosition.top;
+            isFollowingPointer = true;
+            shark.classList.add("is-following");
+            showBite();
+            lastFollowFrameTime = null;
+            followFrame = requestAnimationFrame(followPointerFrame);
+            checkingTimer = setTimeout(checkForPointer, 3000);
+            followTimer = setTimeout(stopFollowingPointer, 5000);
+        }
+
+        shark.addEventListener("pointerdown", (event) => {
+            if (event.button !== 0 || !event.isPrimary || isFollowingPointer) return;
+            lastPointerPosition = { x: event.clientX, y: event.clientY };
+            document.addEventListener("pointermove", handlePointerMove, { passive: true });
+            startFollowingPointer();
+        });
+
+        shark.addEventListener("pointerenter", (event) => {
+            if (event.pointerType !== "mouse" || isFollowingPointer) return;
+
+            lastPointerPosition = { x: event.clientX, y: event.clientY };
+            document.addEventListener("pointermove", handlePointerMove, { passive: true });
+            hoverTimer = setTimeout(startFollowingPointer, 3000);
+        });
+
+        shark.addEventListener("pointerleave", () => {
+            if (!hoverTimer) return;
+            clearTimeout(hoverTimer);
+            hoverTimer = null;
+            document.removeEventListener("pointermove", handlePointerMove);
+            lastPointerPosition = null;
+        });
+
         function moveShark() {
+            if (isFollowingPointer) return;
             const maxX = Math.max(0, title.clientWidth - shark.offsetWidth);
             const maxY = Math.max(0, title.clientHeight - shark.offsetHeight);
             const currentX = parseFloat(shark.style.left) || 0;
@@ -154,10 +387,10 @@ if (shark && sharkImage && title) {
             shark.style.left = `${nextX}px`;
             shark.style.top = `${Math.random() * maxY}px`;
 
-            setTimeout(moveShark, 3500 + Math.random() * 3500);
+            roamTimer = setTimeout(moveShark, 3500 + Math.random() * 3500);
         }
 
-        setTimeout(moveShark, 100);
+        roamTimer = setTimeout(moveShark, 100);
     }
 }
 
@@ -309,7 +542,103 @@ animalToggles.forEach((toggle) => {
         closeAnimalPopovers();
         toggle.setAttribute("aria-expanded", String(willOpen));
         popover.hidden = !willOpen;
+        if (willOpen) {
+            const heading = popover.closest(".water-zone-heading");
+            const headingRect = heading.getBoundingClientRect();
+            const toggleRect = toggle.getBoundingClientRect();
+            popover.style.left = `${toggleRect.left - headingRect.left}px`;
+            popover.style.top = `${toggleRect.bottom - headingRect.top + 8}px`;
+            keepAnimalPopoverInView(popover);
+        }
     });
+});
+
+function keepAnimalPopoverInView(popover) {
+    const rect = popover.getBoundingClientRect();
+    const heading = popover.closest(".water-zone-heading");
+    const headingRect = heading.getBoundingClientRect();
+    const margin = 12;
+    const viewportLeft = Math.min(
+        Math.max(margin, rect.left),
+        Math.max(margin, window.innerWidth - rect.width - margin)
+    );
+    const viewportTop = Math.min(
+        Math.max(margin, rect.top),
+        Math.max(margin, window.innerHeight - rect.height - margin)
+    );
+    popover.style.left = `${viewportLeft - headingRect.left}px`;
+    popover.style.top = `${viewportTop - headingRect.top}px`;
+}
+
+document.querySelectorAll(".water-animal-popover").forEach((popover) => {
+    const handle = popover.querySelector("h3");
+    let drag = null;
+
+    handle?.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        const rect = popover.getBoundingClientRect();
+        drag = {
+            pointerId: event.pointerId,
+            offsetX: event.clientX - rect.left,
+            offsetY: event.clientY - rect.top
+        };
+        handle.setPointerCapture(event.pointerId);
+        handle.style.cursor = "grabbing";
+        event.preventDefault();
+    });
+
+    handle?.addEventListener("pointermove", (event) => {
+        if (!drag || drag.pointerId !== event.pointerId) return;
+        const rect = popover.getBoundingClientRect();
+        const headingRect = popover.closest(".water-zone-heading").getBoundingClientRect();
+        const margin = 12;
+        const left = Math.min(
+            Math.max(margin, event.clientX - drag.offsetX),
+            Math.max(margin, window.innerWidth - rect.width - margin)
+        );
+        const top = Math.min(
+            Math.max(margin, event.clientY - drag.offsetY),
+            Math.max(margin, window.innerHeight - rect.height - margin)
+        );
+        popover.style.left = `${left - headingRect.left}px`;
+        popover.style.top = `${top - headingRect.top}px`;
+    });
+
+    const stopDragging = (event) => {
+        if (!drag || drag.pointerId !== event.pointerId) return;
+        drag = null;
+        handle.style.cursor = "grab";
+    };
+
+    handle?.addEventListener("pointerup", stopDragging);
+    handle?.addEventListener("pointercancel", stopDragging);
+});
+
+window.addEventListener("resize", () => {
+    document.querySelectorAll(".water-animal-popover:not([hidden])")
+        .forEach(keepAnimalPopoverInView);
+});
+
+const animalZoneObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) return;
+
+        const toggle = entry.target.querySelector(".water-animal-toggle");
+        if (!toggle) return;
+
+        const popover = document.getElementById(toggle.getAttribute("aria-controls"));
+        if (popover && !popover.hidden) {
+            toggle.setAttribute("aria-expanded", "false");
+            popover.hidden = true;
+        }
+    });
+}, {
+    root: null,
+    threshold: 0
+});
+
+document.querySelectorAll(".water-zone").forEach((zone) => {
+    animalZoneObserver.observe(zone);
 });
 
 document.addEventListener("click", (event) => {
@@ -330,8 +659,12 @@ lightbox.hidden = true;
 lightbox.innerHTML = `
     <div class="water-lightbox-content">
         <button class="water-lightbox-close" type="button" aria-label="Close photo">×</button>
-        <img class="water-lightbox-image" alt="">
-        <p class="water-lightbox-caption"></p>
+        <img class="water-lightbox-image" alt="" draggable="false">
+        <div class="water-lightbox-caption-row">
+            <button class="water-lightbox-arrow water-lightbox-previous" type="button" aria-label="Previous photo">←</button>
+            <p class="water-lightbox-caption"></p>
+            <button class="water-lightbox-arrow water-lightbox-next" type="button" aria-label="Next photo">→</button>
+        </div>
     </div>
 `;
 document.body.appendChild(lightbox);
@@ -339,7 +672,12 @@ document.body.appendChild(lightbox);
 const lightboxImage = lightbox.querySelector(".water-lightbox-image");
 const lightboxCaption = lightbox.querySelector(".water-lightbox-caption");
 const closeButton = lightbox.querySelector(".water-lightbox-close");
+const lightboxPreviousButton = lightbox.querySelector(".water-lightbox-previous");
+const lightboxNextButton = lightbox.querySelector(".water-lightbox-next");
 let lastFocusedPhoto = null;
+let lightboxPhotoCards = [];
+let lightboxPhotoIndex = -1;
+let lightboxSwipeStart = null;
 
 function closeLightbox() {
     lightbox.hidden = true;
@@ -347,12 +685,58 @@ function closeLightbox() {
     lastFocusedPhoto?.focus();
 }
 
+function showLightboxPhoto(direction) {
+    if (lightboxPhotoCards.length < 2) return;
+
+    lightboxPhotoIndex = (lightboxPhotoIndex + direction + lightboxPhotoCards.length)
+        % lightboxPhotoCards.length;
+    const photoCard = lightboxPhotoCards[lightboxPhotoIndex];
+    const photo = photoCard.querySelector("img");
+    const carousel = photoCard.closest(".water-photos");
+    carousel?.querySelector(direction < 0 ? ".water-photo-previous" : ".water-photo-next")?.click();
+
+    lightboxImage.src = photo.currentSrc || photo.src;
+    lightboxImage.alt = photo.alt;
+    lightboxCaption.textContent = photo.dataset.animal || photo.alt;
+    lastFocusedPhoto = photoCard;
+}
+
+lightboxPreviousButton.addEventListener("click", () => showLightboxPhoto(-1));
+lightboxNextButton.addEventListener("click", () => showLightboxPhoto(1));
+
+lightboxImage.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    lightboxSwipeStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+    lightboxImage.setPointerCapture(event.pointerId);
+});
+
+lightboxImage.addEventListener("pointerup", (event) => {
+    if (!lightboxSwipeStart || event.pointerId !== lightboxSwipeStart.pointerId) return;
+
+    const distance = event.clientX - lightboxSwipeStart.x;
+    const verticalDistance = event.clientY - lightboxSwipeStart.y;
+    lightboxSwipeStart = null;
+    if (Math.abs(distance) < 45 || Math.abs(distance) <= Math.abs(verticalDistance)) return;
+
+    showLightboxPhoto(distance < 0 ? 1 : -1);
+});
+
+lightboxImage.addEventListener("pointercancel", () => {
+    lightboxSwipeStart = null;
+});
+
 document.addEventListener("click", (event) => {
     const photoCard = event.target.closest?.(".water-photo-card");
     const photo = photoCard?.querySelector("img") || event.target.closest?.(".water-photos img");
 
     if (photo) {
         lastFocusedPhoto = photoCard || photo;
+        const photoStack = photo.closest(".water-photo-stack");
+        lightboxPhotoCards = [...(photoStack?.querySelectorAll(".water-photo-card") || [])];
+        lightboxPhotoIndex = lightboxPhotoCards.findIndex((card) => card.contains(photo));
+        const hasMultiplePhotos = lightboxPhotoCards.length > 1;
+        lightboxPreviousButton.hidden = !hasMultiplePhotos;
+        lightboxNextButton.hidden = !hasMultiplePhotos;
         lightboxImage.src = photo.currentSrc || photo.src;
         lightboxImage.alt = photo.alt;
         lightboxCaption.textContent = photo.dataset.animal || photo.alt;
@@ -365,7 +749,13 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !lightbox.hidden) {
-        closeLightbox();
+    if (lightbox.hidden) return;
+    if (event.key === "Escape") closeLightbox();
+    else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showLightboxPhoto(-1);
+    } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showLightboxPhoto(1);
     }
 });
