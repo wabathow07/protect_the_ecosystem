@@ -297,6 +297,7 @@ if (shark && sharkImage && title) {
 
     if (!reducedMotion) {
         let roamTimer;
+        let normalTravelTime = 4.5;
         let hoverTimer;
         let followTimer;
         let checkingTimer;
@@ -430,12 +431,50 @@ if (shark && sharkImage && title) {
             const nextX = Math.random() * maxX;
 
             shark.style.setProperty("--travel-direction", nextX < currentX ? "-1" : "1");
-            shark.style.setProperty("--travel-time", `${3 + Math.random() * 3}s`);
+            normalTravelTime = 3 + Math.random() * 3;
+            shark.style.setProperty("--travel-time", `${normalTravelTime}s`);
             shark.style.left = `${nextX}px`;
             shark.style.top = `${Math.random() * maxY}px`;
 
             roamTimer = setTimeout(moveShark, 3500 + Math.random() * 3500);
         }
+
+        title.addEventListener("pointerdown", (event) => {
+            if (!event.isPrimary || event.button !== 0 || event.target.closest?.(".water-shark")) return;
+
+            const bounds = title.getBoundingClientRect();
+            const maxX = Math.max(0, title.clientWidth - shark.offsetWidth);
+            const maxY = Math.max(0, title.clientHeight - shark.offsetHeight);
+            const targetLeft = Math.min(maxX, Math.max(0, event.clientX - bounds.left - shark.offsetWidth / 2));
+            const targetTop = Math.min(maxY, Math.max(0, event.clientY - bounds.top - shark.offsetHeight / 2));
+            const currentLeft = parseFloat(shark.style.left) || 0;
+            const clickTravelTime = normalTravelTime / 1.5;
+
+            shark.style.setProperty("--travel-time", `${clickTravelTime}s`);
+            if (Math.abs(targetLeft - currentLeft) > 0.5) {
+                shark.style.setProperty("--travel-direction", targetLeft > currentLeft ? "1" : "-1");
+            }
+
+            if (isFollowingPointer) {
+                if (isCheckingForPointer) {
+                    flipTimers.forEach(clearTimeout);
+                    flipTimers = [];
+                    isCheckingForPointer = false;
+                    shark.classList.remove("is-checking");
+                }
+                lastPointerPosition = { x: event.clientX, y: event.clientY };
+                lastFollowFrameTime = null;
+                return;
+            }
+
+            clearTimeout(roamTimer);
+            shark.style.left = `${targetLeft}px`;
+            shark.style.top = `${targetTop}px`;
+            roamTimer = setTimeout(
+                moveShark,
+                Math.max(clickTravelTime * 1000 + 100, 3500 + Math.random() * 3500)
+            );
+        });
 
         roamTimer = setTimeout(moveShark, 100);
     }
