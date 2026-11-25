@@ -1,0 +1,237 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    isolation: isolate;
+    min-height: 100vh;
+    animation: bg-change linear both;
+    animation-timeline: scroll(root);
+}
+
+h1 {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 600%;
+    -webkit-text-stroke-width: 0.00005px;
+    -webkit-text-stroke-color: white;
+}
+
+.content-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    /* determining layer order, this one is layer 1, the video is layer 0 -> video behind texts */
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container-fluid {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+}
+
+.navbar .brand {
+    font-size: 35px;
+    color: black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+    color: white;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.navbar ul li a {
+    color: white;
+    font-size: 20px;
+    display: block;
+    padding: 0.4em 1.6em;
+    transition: .4s;
+    font-weight: 600;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.navbar .brand a:hover {
+    color: brown;
+}
+
+.navbar ul li a:hover {
+    color: brown;
+}
+
+.land-sticky-boundary {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.3fr) minmax(0, 1.2fr);
+    align-items: start;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    width: min(1200px, calc(100% - 4rem));
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.land .sticky {
+    width: 100%;
+    height: 50vh;
+    position: sticky;
+    top: 25vh;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+}
+
+.land .sticky img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex: 1;
+    min-height: 0;
+    height: auto;
+}
+
+.land-sticky-boundary .content-section {
+    min-height: 100vh;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    text-align: left;
+}
+
+.land-animal-list {
+    display: grid;
+    gap: 2.5rem;
+}
+
+.land-animal {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    grid-template-areas: "photo copy";
+    align-items: center;
+    column-gap: clamp(3rem, 6vw, 6rem);
+}
+
+.land-animal:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    grid-template-areas: "copy photo";
+}
+
+.land-animal-copy {
+    grid-area: copy;
+    text-align: center;
+}
+
+.land-animal-photo {
+    display: flex;
+    grid-area: photo;
+    align-items: center;
+    justify-content: center;
+}
+
+.land-animal-copy p {
+    margin-top: 0.5rem;
+}
+
+.land-animal-photo img {
+    display: block;
+    width: min(100%, 280px);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.land-animal-photo figcaption {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+body.land.land-reveal-ready .land-animal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+body.land.land-reveal-ready .land-animal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.land .below {
+    width: 95%;
+    margin: 0 auto 3rem;
+    display: grid;
+    border: dotted;
+    place-items: center;
+    height: 20vh;
+}
+
+@media (max-width: 700px) {
+    .land-sticky-boundary {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        width: calc(100% - 2rem);
+        padding: 2rem 0;
+    }
+
+    .land .sticky {
+        position: static;
+        height: 35vh;
+    }
+
+    .land-sticky-boundary .content-section {
+        min-height: 0;
+    }
+
+    .land-animal {
+        column-gap: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    .land-animal:nth-child(odd) {
+        grid-template-columns: minmax(110px, 0.7fr) minmax(0, 1fr);
+    }
+
+    .land-animal:nth-child(even) {
+        grid-template-columns: minmax(0, 1fr) minmax(110px, 0.7fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.land.land-reveal-ready .land-animal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
