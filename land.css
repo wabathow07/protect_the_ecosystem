@@ -431,7 +431,7 @@ body.land.land-reveal-ready .land-animal.is-visible {
     width: fit-content;
     align-items: center;
     gap: 0.3rem;
-    color: #4e7a27;
+    color: #fff;
     font: 700 0.9rem/1.2 Helvetica, Arial, sans-serif;
     text-decoration: none;
     filter: blur(0.02em);
@@ -444,11 +444,11 @@ body.land.land-reveal-ready .land-animal.is-visible {
 
 .land-water-link:hover,
 .land-water-link:focus-visible {
-    color: #669d34;
+    color: #fff;
 }
 
 .land-water-link:focus-visible {
-    outline: 2px solid #669d34;
+    outline: 2px solid #fff;
     outline-offset: 3px;
 }
 
