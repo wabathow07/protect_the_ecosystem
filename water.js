@@ -546,6 +546,8 @@ document.addEventListener("pointermove", (event) => {
 });
 
 const cursorKrill = document.querySelector(".water-krill");
+const cursorKrillSpinner = cursorKrill?.querySelector(".water-krill-spinner");
+let queuedKrillSpins = 0;
 
 if (cursorKrill && !reducedMotion) {
     const cursorOffsetX = 44;
@@ -557,18 +559,24 @@ if (cursorKrill && !reducedMotion) {
     let positionFrame = 0;
     let isPositioned = false;
 
-    function getKrillTarget() {
+    function clampPosition(x, y) {
         const halfSize = cursorKrill.offsetWidth / 2;
+        const minX = halfSize + 8;
+        const minY = halfSize + 8;
         return {
             x: Math.min(
-                window.innerWidth - halfSize - 8,
-                Math.max(halfSize + 8, pointerX + cursorOffsetX)
+                Math.max(minX, window.innerWidth - halfSize - 8),
+                Math.max(minX, x)
             ),
             y: Math.min(
-                window.innerHeight - halfSize - 8,
-                Math.max(halfSize + 8, pointerY + cursorOffsetY)
+                Math.max(minY, window.innerHeight - halfSize - 8),
+                Math.max(minY, y)
             )
         };
+    }
+
+    function getKrillTarget() {
+        return clampPosition(pointerX + cursorOffsetX, pointerY + cursorOffsetY);
     }
 
     function moveKrill() {
@@ -585,6 +593,17 @@ if (cursorKrill && !reducedMotion) {
             positionFrame = window.requestAnimationFrame(moveKrill);
         }
     }
+
+    cursorKrillSpinner?.addEventListener("animationend", (event) => {
+        if (event.animationName === "krill-click-spin") {
+            queuedKrillSpins -= 1;
+            cursorKrill.classList.remove("is-spinning");
+            if (queuedKrillSpins > 0) {
+                void cursorKrillSpinner.offsetWidth;
+                cursorKrill.classList.add("is-spinning");
+            }
+        }
+    });
 
     document.addEventListener("pointermove", (event) => {
         if (event.pointerType === "touch") return;
@@ -608,6 +627,11 @@ if (cursorKrill && !reducedMotion) {
 
 document.addEventListener("pointerdown", (event) => {
     if (!event.isPrimary || event.button !== 0 || event.target.closest?.(".water-shark")) return;
+
+    if (cursorKrill && cursorKrillSpinner && !reducedMotion) {
+        queuedKrillSpins += 1;
+        if (queuedKrillSpins === 1) cursorKrill.classList.add("is-spinning");
+    }
 
     for (let index = 0; index < 5; index += 1) {
         const bubble = document.createElement("span");
