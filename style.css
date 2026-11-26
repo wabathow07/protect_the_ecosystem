@@ -13,6 +13,14 @@ body {
     animation-timeline: scroll(root);
 }
 
+body.home {
+    display: flex;
+    height: 100svh;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 body.home ::selection {
     color: #24231c;
     background: #d6c779;
@@ -28,6 +36,19 @@ h1 {
     font-size: 600%;
     -webkit-text-stroke-width: 0.00005px;
     -webkit-text-stroke-color: white;
+}
+
+.home .content-section h1 {
+    color: white;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    mix-blend-mode: difference;
+    -webkit-text-stroke: 1px black;
+}
+
+.home .content-section {
+    flex: 1;
+    min-height: 0;
+    padding: clamp(1rem, 3vw, 2rem);
 }
 
 @keyframes bg-change {
@@ -137,6 +158,30 @@ a {
 
 .navbar ul li a:hover {
     color: brown;
+}
+
+.home-action {
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    background-color: white;
+    padding: 0.3em 0.55em;
+}
+
+.home-action a {
+    text-decoration: none;
+    transition: color 180ms ease;
+}
+
+.home-action .land-link:hover,
+.home-action .land-link:focus-visible {
+    color: #fed030;
+    text-shadow: 0 0 1px #24231c;
+}
+
+.home-action .water-link:hover,
+.home-action .water-link:focus-visible {
+    color: #1c7793;
 }
 
 .info {
