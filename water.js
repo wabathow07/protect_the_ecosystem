@@ -983,7 +983,10 @@ document.addEventListener("click", (event) => {
         lightbox.hidden = false;
         document.body.classList.add("water-lightbox-open");
         closeButton.focus();
-    } else if (event.target === lightbox || event.target.closest?.(".water-lightbox-close")) {
+    } else if (
+        lightbox.contains(event.target) &&
+        !event.target.closest?.(".water-lightbox-image, .water-lightbox-arrow, .water-lightbox-caption")
+    ) {
         closeLightbox();
     }
 });
