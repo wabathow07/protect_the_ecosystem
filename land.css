@@ -423,7 +423,11 @@ body.land.land-reveal-ready .land-animal.is-visible {
 .land-footer {
     display: flex;
     justify-content: flex-end;
-    padding-bottom: 180px;
+    padding-bottom: 150px;
+}
+
+.land-carousel:last-of-type {
+    margin-bottom: 2rem;
 }
 
 .land-water-link {
