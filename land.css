@@ -420,6 +420,38 @@ body.land.land-reveal-ready .land-animal.is-visible {
     animation-play-state: paused;
 }
 
+.land-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 180px;
+}
+
+.land-water-link {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.3rem;
+    color: #4e7a27;
+    font: 700 0.9rem/1.2 Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    filter: blur(0.02em);
+}
+
+.land-water-link>span:first-child {
+    position: relative;
+    top: -2px;
+}
+
+.land-water-link:hover,
+.land-water-link:focus-visible {
+    color: #669d34;
+}
+
+.land-water-link:focus-visible {
+    outline: 2px solid #669d34;
+    outline-offset: 3px;
+}
+
 @media (max-width: 1100px) {
     .land-animal {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -477,6 +509,10 @@ body.land.land-reveal-ready .land-animal.is-visible {
 
     .land-animal:nth-child(even) {
         grid-template-columns: minmax(0, 1fr) minmax(110px, 0.7fr);
+    }
+
+    .land-water-link {
+        font-size: 0.8rem;
     }
 }
 
