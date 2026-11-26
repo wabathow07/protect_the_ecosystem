@@ -721,8 +721,9 @@ body.water .water-animal-name {
     transition: color 160ms ease;
 }
 
-body.water .water-animal-name:hover {
-    color: #b7edff;
+body.water .water-animal-name:hover,
+body.water .water-animal-name:focus-visible {
+    color: #e4b83a;
 }
 
 body.water .water-copy p {
