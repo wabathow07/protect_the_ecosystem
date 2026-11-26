@@ -270,6 +270,21 @@ body.water .water-closing h2 {
     filter: blur(0.01em);
 }
 
+body.water .water-closing a,
+body.water .water-closing a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+body.water .water-closing a:focus-visible {
+    outline: 2px solid #e4b83a;
+    outline-offset: 3px;
+}
+
+body.water .water-closing .water-word:hover .water-char {
+    color: #e4b83a;
+}
+
 body.water .water-issues-title {
     display: grid;
     min-height: 35svh;
@@ -704,6 +719,7 @@ body.water .water-zone[data-depth-label="200-1,000 m"] p {
     transition:
         opacity 800ms ease var(--char-delay, 0ms),
         transform 800ms ease var(--char-delay, 0ms),
+        color 180ms ease,
         translate 100ms steps(10, end),
         rotate 100ms steps(10, end);
 }
@@ -881,6 +897,24 @@ body.water .water-krill {
 
 body.water .water-krill.is-visible {
     opacity: 1;
+}
+
+body.water .water-krill-spinner {
+    display: block;
+}
+
+body.water .water-krill.is-spinning .water-krill-spinner {
+    animation: krill-click-spin 700ms ease-in-out;
+}
+
+@keyframes krill-click-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
 }
 
 body.water .water-krill img {
