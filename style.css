@@ -166,11 +166,33 @@ a {
     max-width: 100%;
     background-color: white;
     padding: 0.3em 0.55em;
+    text-align: left;
+}
+
+.home-action-group {
+    display: grid;
+    justify-items: start;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .home-action a {
     text-decoration: none;
     transition: color 180ms ease;
+}
+
+.home-read-more {
+    display: flex;
+    justify-self: stretch;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 0.35em;
+    padding-right: 90px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 40px;
+    color: white;
+    font: 700 0.9rem/1.2 Arial, Helvetica, sans-serif;
 }
 
 .home-action .land-link:hover,
