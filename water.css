@@ -921,8 +921,14 @@ body.water .water-krill img {
     display: block;
     width: 100%;
     height: auto;
+    scale: 1 1;
     filter: sepia(1) saturate(1.8) hue-rotate(8deg) drop-shadow(0 1px 2px rgb(0 15 28 / 45%));
     animation: krill-wiggle 7s ease-in-out infinite;
+    transition: scale 200ms ease;
+}
+
+body.water .water-krill.is-over-climate-image img {
+    scale: -1 1;
 }
 
 @keyframes krill-wiggle {
