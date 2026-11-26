@@ -77,7 +77,10 @@ body.water main {
 
 body.water h1,
 body.water h2,
-body.water p,
+body.water p {
+    color: var(--water-scroll-text-color, #b7edff);
+}
+
 body.water .navbar a {
     color: #b7edff;
 }
@@ -104,7 +107,7 @@ body.water .water-depth-meter {
     gap: 0.2rem;
     width: 72px;
     transform: translateY(-50%);
-    color: #b7edff;
+    color: var(--water-scroll-text-color, #b7edff);
     font: 0.7rem/1.2 Helvetica, Arial, sans-serif;
     text-align: right;
     filter: blur(0.02em);
@@ -160,7 +163,7 @@ body.water .water-depth-ruler li::after {
 
 body.water .water-depth-ruler li[aria-current="location"] {
     opacity: 1;
-    color: #e4faff;
+    color: var(--water-scroll-text-color, #b7edff);
     font-weight: 700;
 }
 
@@ -242,6 +245,158 @@ body.water .water-title h1 {
     position: relative;
     z-index: 1;
     font-size: clamp(3rem, 8vw, 6rem);
+}
+
+body.water .water-climate-section {
+    position: relative;
+    box-sizing: border-box;
+}
+
+body.water .water-closing {
+    display: grid;
+    place-items: center;
+    max-width: 1320px;
+    margin: clamp(3rem, 6vw, 5rem) auto 0;
+    padding-block: clamp(3rem, 6vw, 5rem);
+    text-align: center;
+}
+
+body.water .water-closing h2 {
+    max-width: 1120px;
+    margin: 0;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    line-height: 1.05;
+    filter: blur(0.01em);
+}
+
+body.water .water-issues-title {
+    display: grid;
+    min-height: 35svh;
+    place-items: center;
+    text-align: center;
+}
+
+body.water .water-issues-title h1 {
+    max-width: 1120px;
+    margin: 0;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    text-transform: none;
+    filter: blur(0.01em);
+}
+
+body.water .water-main-issues {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    justify-items: center;
+    gap: clamp(0.5rem, 1vw, 0.875rem);
+    box-sizing: border-box;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+body.water .water-main-issue {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 225px;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    max-width: none;
+    margin: 0 auto;
+    padding: clamp(0.5rem, 1vw, 0.875rem);
+}
+
+body.water .water-main-issue .water-issue-media {
+    order: 2;
+}
+
+body.water .water-main-issue .water-issue-copy {
+    order: 1;
+    box-sizing: border-box;
+    width: min(100%, 15rem);
+    justify-self: center;
+    text-align: center;
+}
+
+body.water .water-warmer {
+    grid-template-columns: 225px minmax(0, 1fr);
+}
+
+body.water .water-warmer .water-issue-media {
+    order: 1;
+}
+
+body.water .water-warmer .water-issue-copy {
+    order: 2;
+}
+
+body.water .water-climate-section+.water-zone {
+    margin-top: clamp(2rem, 3vw, 3rem);
+}
+
+body.water .water-issue-media {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 225px;
+    aspect-ratio: 3 / 4;
+    justify-self: center;
+    overflow: hidden;
+    border: 1px solid #063b66;
+    border-radius: 0;
+    background: #062b42;
+    box-shadow: 0 0 0.5px 0.5px rgb(6 59 102 / 35%);
+}
+
+body.water .water-issue-media img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transition: opacity 420ms ease, mask-image 420ms ease, -webkit-mask-image 420ms ease;
+}
+
+body.water .water-issue-before {
+    z-index: 1;
+    opacity: 1;
+}
+
+body.water .water-issue-after {
+    z-index: 2;
+    opacity: 0;
+}
+
+body.water .water-issue-media:hover .water-issue-before,
+body.water .water-issue-media:focus-within .water-issue-before,
+body.water .water-issue-media:focus .water-issue-before {
+    opacity: 0;
+}
+
+body.water .water-issue-media:hover .water-issue-after,
+body.water .water-issue-media:focus-within .water-issue-after,
+body.water .water-issue-media:focus .water-issue-after {
+    opacity: 1;
+}
+
+body.water .water-issue-copy h2 {
+    margin: 0 0 1rem;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+    filter: blur(0.01em);
+}
+
+body.water .water-issue-copy p {
+    margin: 0;
+    font-size: clamp(0.95rem, 1.05vw, 1.15rem);
+    line-height: 1.55;
 }
 
 body.water .water-shark {
@@ -369,7 +524,7 @@ body.water .water-image {
     border: 2px dashed #39839c;
     border-radius: 12px;
     background: #062b42;
-    color: #b7edff;
+    color: var(--water-scroll-text-color, #b7edff);
 }
 
 body.water .water-image:has(.water-photos) {
@@ -412,10 +567,10 @@ body.water .water-animal-toggle {
     height: 1.55rem;
     place-items: center;
     padding: 0;
-    border: 1px solid #b7edff;
+    border: 1px solid var(--water-scroll-text-color, #b7edff);
     border-radius: 50%;
     background: rgb(var(--water-depth-color, 98 198 223) / 55%);
-    color: #b7edff;
+    color: var(--water-scroll-text-color, #b7edff);
     font: 700 .9rem/1 Helvetica, Arial, sans-serif;
     cursor: pointer;
     opacity: 0;
@@ -435,7 +590,7 @@ body.water .water-animal-toggle.is-visible {
 body.water .water-animal-toggle:hover,
 body.water .water-animal-toggle[aria-expanded="true"] {
     background: rgb(var(--water-depth-color, 98 198 223));
-    color: #e4faff;
+    color: var(--water-scroll-text-color, #b7edff);
 }
 
 body.water .water-animal-toggle:focus-visible {
@@ -528,6 +683,11 @@ body.water .water-animal-name:hover {
 body.water .water-copy p {
     font-size: clamp(1.3rem, 1.05rem + 0.5vw, 1.7rem);
     line-height: 1.7;
+}
+
+body.water .water-zone[data-depth-label="0-200 m"] p,
+body.water .water-zone[data-depth-label="200-1,000 m"] p {
+    filter: none;
 }
 
 .water-word {
@@ -663,7 +823,7 @@ body.water .water-photo-arrow {
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: #b7edff;
+    color: var(--water-scroll-text-color, #b7edff);
     box-shadow: none;
     cursor: pointer;
     opacity: 0;
@@ -804,6 +964,25 @@ body.water-lightbox-open {
     overflow: hidden;
 }
 
+@media (max-width: 1050px) {
+    body.water .water-main-issues {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    body.water .water-main-issue {
+        width: min(100%, 650px);
+    }
+
+    body.water .water-main-issue {
+        grid-template-columns: minmax(0, 1fr) 225px;
+    }
+
+    body.water .water-warmer {
+        grid-template-columns: 225px minmax(0, 1fr);
+    }
+}
+
 @media (max-width: 700px) {
     body.water .navbar {
         flex-direction: column;
@@ -859,6 +1038,22 @@ body.water-lightbox-open {
     body.water .water-zone:nth-of-type(n) .water-zone-heading {
         flex-direction: row;
         justify-content: flex-start;
+    }
+
+    body.water .water-main-issue {
+        grid-template-columns: 1fr;
+    }
+
+    body.water .water-main-issue .water-issue-media {
+        order: 1;
+    }
+
+    body.water .water-main-issue .water-issue-copy {
+        order: 2;
+    }
+
+    body.water .water-issue-media {
+        max-width: 360px;
     }
 
     body.water .water-image {
