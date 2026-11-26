@@ -130,28 +130,66 @@ const depthMeter = document.querySelector(".water-depth-meter");
 const depthZoneLabel = depthMeter?.querySelector(".water-depth-zone");
 depthMeter?.classList.add("is-visible");
 const depthTicks = [...(depthMeter?.querySelectorAll(".water-depth-ruler li") || [])];
-const colorStops = [
-    { at: 0, rgb: [98, 198, 223] },
-    { at: 0.2, rgb: [8, 77, 111] },
-    { at: 0.5, rgb: [4, 39, 61] },
-    { at: 0.75, rgb: [1, 15, 25] },
-    { at: 1, rgb: [0, 0, 0] },
-];
+const climateSection = document.querySelector(".water-climate-section");
 let depthFrame = 0;
 
 function updateOceanDepth() {
     depthFrame = 0;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
-    const stopIndex = colorStops.findIndex((stop) => stop.at >= progress);
-    const upperStop = colorStops[Math.max(1, stopIndex) - 1];
-    const lowerStop = colorStops[Math.max(1, stopIndex)];
+    const progress = maxScroll > 0
+        ? Math.min(1, Math.max(0, (window.scrollY + window.innerHeight * 0.5) / maxScroll))
+        : 0;
+    const scrollProgressAt = (element, edge = "top") => {
+        const bounds = element.getBoundingClientRect();
+        const position = window.scrollY + bounds.top + (edge === "bottom" ? bounds.height : 0);
+        return maxScroll > 0 ? Math.min(1, Math.max(0, position / maxScroll)) : 0;
+    };
+    const sunlitStart = scrollProgressAt(depthZones[0]);
+    const sunlitEnd = scrollProgressAt(depthZones[0], "bottom");
+    const twilightStart = scrollProgressAt(depthZones[1]);
+    const twilightEnd = scrollProgressAt(depthZones[1], "bottom");
+    const colorStops = maxScroll > 0
+        ? [
+            { at: 0, rgb: [98, 198, 223] },
+            { at: scrollProgressAt(climateSection), rgb: [98, 198, 223] },
+            { at: sunlitStart, rgb: [92, 186, 219] },
+            { at: sunlitStart + (sunlitEnd - sunlitStart) * 0.5, rgb: [88, 178, 211] },
+            { at: sunlitEnd, rgb: [84, 170, 203] },
+            { at: twilightStart, rgb: [78, 160, 197] },
+            {
+                at: twilightStart + (twilightEnd - twilightStart) * 0.12,
+                rgb: [8, 77, 111],
+            },
+            {
+                at: (twilightStart + twilightEnd) / 2,
+                rgb: [4, 39, 61],
+            },
+            { at: scrollProgressAt(depthZones[2]), rgb: [1, 15, 25] },
+            { at: scrollProgressAt(depthZones[3]), rgb: [1, 15, 25] },
+            { at: 1, rgb: [0, 0, 0] },
+        ]
+        : [
+            { at: 0, rgb: [98, 198, 223] },
+            { at: 1, rgb: [98, 198, 223] },
+        ];
+    const foundLowerIndex = colorStops.findIndex((stop) => stop.at > progress);
+    const lowerIndex = foundLowerIndex < 0
+        ? colorStops.length - 1
+        : Math.max(1, foundLowerIndex);
+    const upperStop = colorStops[lowerIndex - 1];
+    const lowerStop = colorStops[lowerIndex];
     const blend = Math.min(1, (progress - upperStop.at) / (lowerStop.at - upperStop.at));
     const rgb = upperStop.rgb.map((channel, index) =>
         Math.round(channel + (lowerStop.rgb[index] - channel) * blend)
     );
 
     document.body.style.setProperty("--water-depth-color", rgb.join(" "));
+    const backgroundLightness = rgb.reduce((sum, channel) => sum + channel, 0) / 3;
+    const textBlend = Math.min(1, Math.max(0, (130 - backgroundLightness) / 65));
+    const climateTextColor = [6, 59, 102].map((channel, index) =>
+        Math.round(channel + ([183, 237, 255][index] - channel) * textBlend)
+    );
+    document.body.style.setProperty("--water-scroll-text-color", `rgb(${climateTextColor.join(" ")})`);
 
     const marker = window.innerHeight * 0.5;
     let activeIndex = depthZones.findIndex((zone) => {
@@ -506,6 +544,67 @@ document.addEventListener("pointermove", (event) => {
     document.body.appendChild(bubble);
     bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
 });
+
+const cursorKrill = document.querySelector(".water-krill");
+
+if (cursorKrill && !reducedMotion) {
+    const cursorOffsetX = 44;
+    const cursorOffsetY = -34;
+    let pointerX = 0;
+    let pointerY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let positionFrame = 0;
+    let isPositioned = false;
+
+    function getKrillTarget() {
+        const halfSize = cursorKrill.offsetWidth / 2;
+        return {
+            x: Math.min(
+                window.innerWidth - halfSize - 8,
+                Math.max(halfSize + 8, pointerX + cursorOffsetX)
+            ),
+            y: Math.min(
+                window.innerHeight - halfSize - 8,
+                Math.max(halfSize + 8, pointerY + cursorOffsetY)
+            )
+        };
+    }
+
+    function moveKrill() {
+        positionFrame = 0;
+        const target = getKrillTarget();
+        const deltaX = target.x - currentX;
+        const deltaY = target.y - currentY;
+        currentX += deltaX * 0.18;
+        currentY += deltaY * 0.18;
+        cursorKrill.style.left = `${currentX}px`;
+        cursorKrill.style.top = `${currentY}px`;
+
+        if (Math.hypot(deltaX, deltaY) > 0.25) {
+            positionFrame = window.requestAnimationFrame(moveKrill);
+        }
+    }
+
+    document.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") return;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+
+        if (!isPositioned) {
+            const target = getKrillTarget();
+            currentX = target.x;
+            currentY = target.y;
+            cursorKrill.style.left = `${currentX}px`;
+            cursorKrill.style.top = `${currentY}px`;
+            cursorKrill.classList.add("is-visible");
+            isPositioned = true;
+            return;
+        }
+
+        if (!positionFrame) positionFrame = window.requestAnimationFrame(moveKrill);
+    }, { passive: true });
+}
 
 document.addEventListener("pointerdown", (event) => {
     if (!event.isPrimary || event.button !== 0 || event.target.closest?.(".water-shark")) return;
