@@ -215,11 +215,12 @@ body.water .water-title {
 }
 
 body.water .water-land-link {
-    position: absolute;
-    top: calc(0.25rem + 5px);
-    left: 0.5rem;
-    z-index: 2;
-    display: inline-flex;
+    position: sticky;
+    top: 10px;
+    z-index: 10001;
+    display: flex;
+    width: fit-content;
+    margin: calc(0.25rem + 5px) 0 -1.2em 0.5rem;
     align-items: center;
     gap: 0.3rem;
     color: var(--water-scroll-text-color, #b7edff);
