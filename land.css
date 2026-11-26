@@ -384,6 +384,7 @@ body.land.land-reveal-ready .land-animal.is-visible {
 
 .land-carousel-track {
     position: absolute;
+    gap: 1rem;
     top: 0;
     left: 0;
     display: flex;
