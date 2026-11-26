@@ -623,6 +623,20 @@ if (cursorKrill && !reducedMotion) {
 
         if (!positionFrame) positionFrame = window.requestAnimationFrame(moveKrill);
     }, { passive: true });
+
+    document.querySelectorAll(".water-issue-media").forEach((image) => {
+        image.addEventListener("pointerenter", (event) => {
+            if (event.pointerType === "mouse" || event.pointerType === "pen") {
+                cursorKrill.classList.add("is-over-climate-image");
+            }
+        });
+
+        image.addEventListener("pointerleave", (event) => {
+            if (event.pointerType === "mouse" || event.pointerType === "pen") {
+                cursorKrill.classList.remove("is-over-climate-image");
+            }
+        });
+    });
 }
 
 document.addEventListener("pointerdown", (event) => {
