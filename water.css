@@ -214,6 +214,35 @@ body.water .water-title {
     text-align: center;
 }
 
+body.water .water-land-link {
+    position: absolute;
+    top: calc(0.25rem + 5px);
+    left: 0.5rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--water-scroll-text-color, #b7edff);
+    font: 700 0.9rem/1.2 Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    filter: blur(0.02em);
+}
+
+body.water .water-land-link > span:first-child {
+    position: relative;
+    top: -2px;
+}
+
+body.water .water-land-link:hover,
+body.water .water-land-link:focus-visible {
+    color: #669d34;
+}
+
+body.water .water-land-link:focus-visible {
+    outline: 2px solid #669d34;
+    outline-offset: 3px;
+}
+
 body.water .water-title h1,
 body.water .water-copy h2 {
     font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
@@ -1087,6 +1116,10 @@ body.water-lightbox-open {
         right: 6px;
         width: 64px;
         font-size: 0.62rem;
+    }
+
+    body.water .water-land-link {
+        font-size: 0.8rem;
     }
 
     body.water .water-depth-ruler li {
