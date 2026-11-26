@@ -15,10 +15,11 @@ document.querySelectorAll(".water-photos img").forEach((image) => {
     image.style.setProperty("--rough-edge-mask", roughEdgeMask(Math.floor(Math.random() * 1_000_000)));
 });
 
-// Wrap headings, paragraphs, and depth-meter labels into animated characters.
+// Wrap headings, paragraphs, and navigation labels into animated characters.
 function setRandomCharacterWiggle(char) {
-    const displacement = (Math.random() * 3 - 1.5).toFixed(2);
-    const rotation = (Math.random() * 1.6 - 0.8).toFixed(2);
+    const range = char.closest(".water-land-link") ? 0.35 : 1;
+    const displacement = ((Math.random() * 3 - 1.5) * range).toFixed(2);
+    const rotation = ((Math.random() * 1.6 - 0.8) * range).toFixed(2);
     char.style.setProperty("--wiggle-y", `${displacement}px`);
     char.style.setProperty("--wiggle-rotate", `${rotation}deg`);
 }
@@ -27,7 +28,7 @@ function wrapTextCharacters(element) {
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     const textNodes = [];
     const shouldWiggle = !reducedMotion && element.matches(
-        ".content-section h1, .content-section h2, .water-depth-zone, .water-depth-ruler button"
+        ".content-section h1, .content-section h2, .water-depth-zone, .water-depth-ruler button, .water-land-link"
     );
 
     while (walker.nextNode()) textNodes.push(walker.currentNode);
@@ -62,27 +63,28 @@ function wrapTextCharacters(element) {
 }
 
 document.querySelectorAll(
-    ".content-section h1, .content-section h2, .content-section p, .water-depth-zone, .water-depth-ruler button"
+    ".content-section h1, .content-section h2, .content-section p, .water-depth-zone, .water-depth-ruler button, .water-land-link"
 ).forEach(wrapTextCharacters);
 
 const textCharSelector = [
     ".content-section h1 .water-char",
     ".content-section h2 .water-char",
-    ".water-depth-meter .water-char"
+    ".water-depth-meter .water-char",
+    ".water-land-link .water-char"
 ].join(", ");
 let textChars = [...document.querySelectorAll(textCharSelector)];
 
 if (!reducedMotion) {
     const nextWiggleAt = new WeakMap();
     const now = performance.now();
-    textChars.filter((char) => !char.closest(".water-depth-meter")).forEach((char) => {
+    textChars.filter((char) => !char.closest(".water-depth-meter, .water-land-link")).forEach((char) => {
         nextWiggleAt.set(char, now + Math.random() * 1400);
     });
 
     function updateTextWiggle() {
         const now = performance.now();
         textChars.forEach((char) => {
-            if (char.closest(".water-depth-meter")) return;
+            if (char.closest(".water-depth-meter, .water-land-link")) return;
             if (nextWiggleAt.get(char) > now) return;
 
             nextWiggleAt.set(char, now + 500 + Math.random() * 700);
@@ -95,7 +97,8 @@ if (!reducedMotion) {
     }
 
     function updateDepthMeterWiggle() {
-        document.querySelectorAll(".water-depth-meter .water-char").forEach(setRandomCharacterWiggle);
+        document.querySelectorAll(".water-depth-meter .water-char, .water-land-link .water-char")
+            .forEach(setRandomCharacterWiggle);
         window.setTimeout(updateDepthMeterWiggle, 1000);
     }
 
@@ -110,7 +113,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll(
-    ".content-section h1, .content-section h2, .content-section p, .water-animal-toggle, .water-photo-arrow"
+    ".content-section h1, .content-section h2, .content-section p, .water-animal-toggle, .water-photo-arrow, .water-land-link"
 ).forEach((element) => revealObserver.observe(element));
 
 const photoRevealObserver = new IntersectionObserver((entries, observer) => {
